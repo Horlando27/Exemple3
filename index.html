@@ -1,4 +1,4 @@
-.
+
 <!DOCTYPE html>
 <html lang="mg">
 <head>
@@ -35,6 +35,7 @@
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       --whatsapp: #25D366;
       --whatsapp-dark: #128C7E;
+      --reactivate: #FF6B00;
     }
     
     * {
@@ -259,6 +260,16 @@
     
     .btn-withdraw:hover {
       background: #e11d74;
+      color: white;
+    }
+    
+    .btn-reactivate {
+      background: var(--reactivate);
+      color: white;
+    }
+    
+    .btn-reactivate:hover {
+      background: #e05a00;
       color: white;
     }
     
@@ -837,66 +848,123 @@
       color: white;
     }
     
-    /* Nouveaux styles pour la gestion de budget */
-    .task-status-badge {
+    /* Styles pour la section historique */
+    .history-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 1.25rem;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    
+    .history-table th {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .history-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .history-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .history-table tr:nth-child(even) {
+      background-color: var(--gray-100);
+    }
+    
+    .history-table tr:hover {
+      background-color: var(--primary-light);
+    }
+    
+    .history-badge {
       padding: 0.35rem 0.75rem;
       border-radius: 50px;
       font-size: 0.85rem;
       font-weight: 500;
-      margin-top: 0.5rem;
     }
     
-    .status-active {
+    .badge-deposit {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    
+    .badge-withdraw {
+      background: #fce4ec;
+      color: #e91e63;
+    }
+    
+    .badge-proof {
       background: #e8f5e9;
       color: #4caf50;
     }
     
-    .status-exhausted {
-      background: #ffecb3;
+    .badge-pending {
+      background: #fff8e1;
       color: #ffa000;
     }
     
-    .reactivate-btn {
-      background: #ffc107;
-      color: #212529;
-      border: none;
+    .badge-confirmed {
+      background: #e8f5e9;
+      color: #4caf50;
+    }
+    
+    .badge-canceled {
+      background: #ffebee;
+      color: #f44336;
+    }
+    
+    .badge-inactive {
+      background: #e0e0e0;
+      color: #616161;
+    }
+    
+    .history-section {
+      margin-bottom: 2.5rem;
+    }
+    
+    /* Nouveau style pour la notification d'attente */
+    .pending-notification {
+      background: #e3f2fd;
+      color: #1976d2;
       padding: 0.5rem 1rem;
       border-radius: 50px;
       font-weight: 500;
-      margin-top: 0.5rem;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      width: 100%;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
     }
     
-    .reactivate-btn:hover {
-      background: #ffb300;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3);
-    }
-    
-    .task-stats {
+    .publication-stats {
       display: flex;
       justify-content: space-between;
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px dashed var(--gray-300);
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #f8f9fc;
+      border-radius: 10px;
     }
     
-    .task-stat-item {
+    .stat-item-pub {
       text-align: center;
       flex: 1;
     }
     
-    .task-stat-value {
-      font-weight: 600;
-      font-size: 1.1rem;
+    .stat-number-pub {
+      font-size: 1.5rem;
+      font-weight: 700;
       color: var(--primary);
     }
     
-    .task-stat-label {
-      font-size: 0.75rem;
+    .stat-label-pub {
+      font-size: 0.8rem;
       color: var(--gray-600);
     }
     
@@ -923,7 +991,7 @@
         font-size: 1.6rem;
       }
       
-      .admin-table {
+      .admin-table, .history-table {
         display: block;
         overflow-x: auto;
       }
@@ -937,7 +1005,7 @@
         flex-direction: column;
       }
       
-      .task-stats {
+      .publication-stats {
         flex-direction: column;
         gap: 0.5rem;
       }
@@ -1057,12 +1125,86 @@
         <a class="nav-link" href="#tasksSection" onclick="showSection('tasksSection')"><i class="fas fa-tasks me-1"></i> Asa</a>
         <a class="nav-link" href="#publicationSection" onclick="showSection('publicationSection')"><i class="fas fa-bullhorn me-1"></i> Publication</a>
         <a class="nav-link" href="#settingsSection" onclick="showSection('settingsSection')"><i class="fas fa-sliders-h me-1"></i> Paramètres</a>
+        <!-- Nouvel onglet Historique -->
         <a class="nav-link" href="#historySection" onclick="showSection('historySection'); loadHistory()"><i class="fas fa-history me-1"></i> Historique</a>
       </nav>
 
       <!-- Admin Section -->
       <div id="adminSection" class="mb-5" style="display:none;">
-        <!-- Contenu admin inchangé -->
+        <h4 class="section-title"><i class="fas fa-cog me-2"></i>Admin Panel</h4>
+        <div class="admin-card">
+          <h5 class="admin-header"><i class="fas fa-money-bill-wave me-2"></i>Demandes de Dépôt</h5>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Montant</th>
+                <th>Méthode</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="depotList">
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <div class="empty-state py-0">
+                    <i class="fas fa-inbox"></i>
+                    <p>Aucune demande de dépôt en attente</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="admin-card">
+          <h5 class="admin-header"><i class="fas fa-hand-holding-usd me-2"></i>Demandes de Retrait</h5>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Montant</th>
+                <th>Frais</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="retraitList">
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <div class="empty-state py-0">
+                    <i class="fas fa-inbox"></i>
+                    <p>Aucune demande de retrait en attente</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="admin-card">
+          <h5 class="admin-header"><i class="fas fa-check-circle me-2"></i>Soumissions de Preuves</h5>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Tâche</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="submissionList">
+              <tr>
+                <td colspan="4" class="text-center py-4">
+                  <div class="empty-state py-0">
+                    <i class="fas fa-inbox"></i>
+                    <p>Aucune soumission de preuve en attente</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Compte Section -->
@@ -1111,7 +1253,7 @@
         </div>
       </div>
 
-      <!-- Publication Section avec les nouvelles modifications -->
+      <!-- Publication Section -->
       <div id="publicationSection" class="mb-5" style="display:none;">
         <h4 class="section-title"><i class="fas fa-bullhorn me-2"></i>Publication</h4>
         <div class="section-card mb-4">
@@ -1123,24 +1265,17 @@
             
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label class="form-label">Budget par preuve (≥ 50 Ar)</label>
-                <input id="pubBudgetPerProof" type="number" class="form-control" placeholder="Ex: 50" required min="50">
-                <div class="form-text">Montant par preuve validée</div>
+                <label class="form-label">Budget par participant (≥ 50Ar)</label>
+                <input id="pubBudgetPerParticipant" type="number" class="form-control" placeholder="Ex: 50" min="50" required>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label">Nombre de preuves souhaitées</label>
-                <input id="pubProofCount" type="number" class="form-control" placeholder="Ex: 10" required min="1">
-                <div class="form-text">Nombre maximum de preuves</div>
+                <label class="form-label">Type de tâche</label>
+                <select id="taskType" class="form-select" required>
+                  <option value="">Choisir un type</option>
+                  <option value="social">Réseau social</option>
+                  <option value="website">Inscription site web</option>
+                </select>
               </div>
-            </div>
-            
-            <div class="mb-3">
-              <label class="form-label">Type de tâche</label>
-              <select id="taskType" class="form-select" required>
-                <option value="">Choisir un type</option>
-                <option value="social">Réseau social</option>
-                <option value="website">Inscription site web</option>
-              </select>
             </div>
             
             <div class="mb-3" id="socialMediaContainer" style="display:none;">
@@ -1227,9 +1362,90 @@
         </div>
       </div>
 
-      <!-- Historique Section -->
+      <!-- Nouvelle section Historique -->
       <div id="historySection" class="mb-5" style="display:none;">
-        <!-- Contenu historique inchangé -->
+        <h4 class="section-title"><i class="fas fa-history me-2"></i>Historique des Transactions</h4>
+        
+        <!-- Historique des Dépôts -->
+        <div class="history-section">
+          <h5 class="mb-3"><i class="fas fa-money-bill-wave me-2"></i>Historique des Dépôts</h5>
+          <div class="table-responsive">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Montant</th>
+                  <th>Méthode</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody id="depositHistory">
+                <tr>
+                  <td colspan="4" class="text-center py-4">
+                    <div class="empty-state py-0">
+                      <i class="fas fa-spinner fa-spin"></i>
+                      <p>Chargement de l'historique des dépôts...</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Historique des Retraits -->
+        <div class="history-section">
+          <h5 class="mb-3"><i class="fas fa-hand-holding-usd me-2"></i>Historique des Retraits</h5>
+          <div class="table-responsive">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Montant</th>
+                  <th>Frais</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody id="withdrawHistory">
+                <tr>
+                  <td colspan="4" class="text-center py-4">
+                    <div class="empty-state py-0">
+                      <i class="fas fa-spinner fa-spin"></i>
+                      <p>Chargement de l'historique des retraits...</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Historique des Preuves -->
+        <div class="history-section">
+          <h5 class="mb-3"><i class="fas fa-check-circle me-2"></i>Historique des Preuves</h5>
+          <div class="table-responsive">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Tâche</th>
+                  <th>Statut</th>
+                  <th>Gain</th>
+                </tr>
+              </thead>
+              <tbody id="proofHistory">
+                <tr>
+                  <td colspan="4" class="text-center py-4">
+                    <div class="empty-state py-0">
+                      <i class="fas fa-spinner fa-spin"></i>
+                      <p>Chargement de l'historique des preuves...</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <!-- Modals -->
@@ -1596,8 +1812,8 @@
 
     document.getElementById("depositForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const montant = parseFloat(document.getElementById('depositAmount').value);
-      const method = document.getElementById('depositMethod').value;
+      const montant = parseFloat(document.getElementById("depositAmount").value);
+      const method = document.getElementById("depositMethod").value;
       
       if (montant >= 5000 && method) {
         try {
@@ -1620,9 +1836,9 @@
 
     document.getElementById("withdrawForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const nom = document.getElementById('withdrawName').value;
-      const phone = document.getElementById('withdrawPhone').value;
-      const montant = parseFloat(document.getElementById('withdrawAmount').value);
+      const nom = document.getElementById("withdrawName").value;
+      const phone = document.getElementById("withdrawPhone").value;
+      const montant = parseFloat(document.getElementById("withdrawAmount").value);
       
       try {
         // Vérifier le solde de gains
@@ -1745,7 +1961,7 @@
             <div class="task-card card ${borderClass}">
               <div class="card-body">
                 ${typeBadge}
-                <span class="task-badge">${d.budgetPerProof} Ar</span>
+                <span class="task-badge">${d.budgetPerParticipant} Ar</span>
                 <h6 class="card-title">${icon} ${d.description}</h6>
                 <small class="d-block text-muted mb-2">Conditions: ${d.cond || 'Aucune'}</small>
                 <div class="small mt-2">ID: ${taskId.substring(0,8)}...</div>
@@ -1881,6 +2097,13 @@
           
           let icon = '';
           let typeText = '';
+          let statusBadge = '';
+          
+          if (d.status === 'active') {
+            statusBadge = '<span class="badge bg-success">Active</span>';
+          } else {
+            statusBadge = '<span class="badge bg-secondary">Inactive</span>';
+          }
           
           if (d.taskType === 'social') {
             switch(d.socialMedia) {
@@ -1906,53 +2129,38 @@
             typeText = 'Inscription site web';
           }
           
-          // Déterminer le statut
-          let statusBadge = '';
-          let reactivateBtn = '';
-          
-          if (d.status === 'active') {
-            statusBadge = '<span class="task-status-badge status-active">Active</span>';
-          } else if (d.status === 'exhausted') {
-            statusBadge = '<span class="task-status-badge status-exhausted">Budget épuisé</span>';
-            reactivateBtn = `
-              <button class="reactivate-btn" onclick="reactivatePublication('${taskId}')">
-                <i class="fas fa-redo me-1"></i> Redemander
-              </button>
-            `;
-          }
-          
           el.innerHTML = `
             <div class="card task-card">
               <div class="card-body">
                 <h6>${icon} ${d.description}</h6>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="badge bg-warning">${d.budgetPerProof} Ar / preuve</span>
+                  <span class="badge bg-warning">${d.budgetPerParticipant} Ar/part</span>
                   ${statusBadge}
                 </div>
                 <div class="mt-2 small">${typeText}</div>
-                
-                <div class="task-stats">
-                  <div class="task-stat-item">
-                    <div class="task-stat-value">${d.validatedProofs || 0}</div>
-                    <div class="task-stat-label">Preuves validées</div>
+                <div class="mt-2 small">WhatsApp: ${d.whatsapp || 'Non configuré'}</div>
+                <div class="publication-stats">
+                  <div class="stat-item-pub">
+                    <div class="stat-number-pub">${d.completedCount || 0}</div>
+                    <div class="stat-label-pub">Participants</div>
                   </div>
-                  <div class="task-stat-item">
-                    <div class="task-stat-value">${d.proofCount || 0}</div>
-                    <div class="task-stat-label">Preuves souhaitées</div>
-                  </div>
-                  <div class="task-stat-item">
-                    <div class="task-stat-value">${d.remainingBudget || 0} Ar</div>
-                    <div class="task-stat-label">Budget restant</div>
+                  <div class="stat-item-pub">
+                    <div class="stat-number-pub">${(d.completedCount || 0) * (d.budgetPerParticipant || 0)} Ar</div>
+                    <div class="stat-label-pub">Dépensé</div>
                   </div>
                 </div>
-                
                 <div class="admin-task-id" onclick="copyToClipboard('${taskId}')">ID: ${taskId.substring(0,8)}...</div>
                 <div class="mt-2">
                   <a href="${d.url}" target="_blank" class="btn btn-sm btn-outline-primary">
                     <i class="fas fa-external-link-alt me-1"></i> Voir la tâche
                   </a>
+                  ${d.status === 'inactive' ? 
+                    `<button class="btn btn-reactivate btn-sm mt-2" onclick="reactivateTask('${taskId}')">
+                      <i class="fas fa-sync-alt me-1"></i> Réactiver
+                    </button>` 
+                    : ''
+                  }
                 </div>
-                ${reactivateBtn}
               </div>
             </div>
           `;
@@ -1971,20 +2179,14 @@
     document.getElementById('publishForm').addEventListener('submit', async e => {
       e.preventDefault();
       const desc = document.getElementById('pubDescription').value;
-      const budgetPerProof = parseInt(document.getElementById('pubBudgetPerProof').value);
-      const proofCount = parseInt(document.getElementById('pubProofCount').value);
+      const budgetPerParticipant = parseInt(document.getElementById('pubBudgetPerParticipant').value);
       const url = document.getElementById('pubURL').value;
       const cond = document.getElementById('pubConditions').value;
       const taskType = document.getElementById('taskType').value;
       const socialMedia = document.getElementById('socialMedia').value;
       
-      if (budgetPerProof < 50) {
-        showNotification('Budget par preuve ≥ 50 Ar', 'warning');
-        return;
-      }
-      
-      if (proofCount < 1) {
-        showNotification('Nombre de preuves ≥ 1', 'warning');
+      if (budgetPerParticipant < 50) {
+        showNotification('Budget ≥ 50 Ar par participant', 'warning');
         return;
       }
       
@@ -1999,48 +2201,34 @@
       }
       
       try {
-        // Calcul du budget total nécessaire
-        const totalBudget = budgetPerProof * proofCount;
-        
         // Vérifier le solde de dépôt
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         const userData = userSnap.data();
         
-        if (userData.depot < totalBudget) {
-          showNotification(`Solde de dépôt insuffisant. Il vous faut ${totalBudget} Ar`, 'warning');
+        if (userData.depot < budgetPerParticipant) {
+          showNotification('Solde de dépôt insuffisant pour au moins un participant', 'warning');
           return;
         }
         
-        // Réserver le budget pour cette publication
-        await updateDoc(userRef, {
-          depot: userData.depot - totalBudget
-        });
-        
-        // Créer la tâche avec les nouvelles propriétés
-        const taskData = {
+        // Créer la tâche sans déduire le solde
+        await addDoc(collection(db,'tasks'),{
           publisher: userId,
           publisherName: userName,
           description: desc,
-          budgetPerProof: budgetPerProof,
-          totalBudget: totalBudget,
-          proofCount: proofCount,
-          validatedProofs: 0,
-          remainingBudget: totalBudget,
+          budgetPerParticipant,
           url,
           cond,
           taskType,
           socialMedia: taskType === 'social' ? socialMedia : '',
           status: 'active',
           whatsapp: userWhatsApp,
-          createdAt: serverTimestamp()
-        };
+          createdAt: serverTimestamp(),
+          completedCount: 0
+        });
         
-        await addDoc(collection(db,'tasks'), taskData);
-        
-        showNotification('Asa navoaka!', 'success');
+        showNotification('Asa navoaka! Le solde ne sera déduit que lorsque les participants enverront des preuves.', 'success');
         loadPublications();
-        loadBalances();
         
         // Reset form
         e.target.reset();
@@ -2050,128 +2238,329 @@
       }
     });
 
-    // Fonction pour réactiver une publication
-    window.reactivatePublication = async (taskId) => {
+    // --- Section Admin ---
+    async function loadAdminPanel() {
+      await loadRequests('depot_requests','depotList','depot');
+      await loadRequests('retrait_requests','retraitList','retrait');
+      await loadRequests('submissions','submissionList','proof');
+    }
+    
+    async function loadRequests(col, container, type) {
+      try {
+        const c = document.getElementById(container);
+        c.innerHTML = '';
+        
+        const q = query(collection(db, col), where('status','==','en attente'));
+        const snap = await getDocs(q);
+        
+        if (snap.empty) {
+          c.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-inbox"></i>
+                  <p>Aucune demande en attente</p>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+        
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString() : 'Date inconnue';
+          const el = document.createElement('tr');
+          
+          if (type === 'depot') {
+            el.innerHTML = `
+              <td>${d.userName || d.userId}</td>
+              <td>${d.montant} Ar</td>
+              <td>${d.method}</td>
+              <td>${date}</td>
+              <td class="admin-actions">
+                <button class='btn btn-success btn-sm me-1' onclick='confirmAction("${col}","${docSnap.id}","${type}",${JSON.stringify(d)})'>
+                  <i class="fas fa-check me-1"></i>
+                </button>
+                <button class='btn btn-danger btn-sm' onclick='cancelAction("${col}","${docSnap.id}")'>
+                  <i class="fas fa-times me-1"></i>
+                </button>
+              </td>
+            `;
+          } else if (type === 'retrait') {
+            el.innerHTML = `
+              <td>${d.nom || d.userName || d.userId}</td>
+              <td>${d.montant} Ar</td>
+              <td>${d.frais || 0} Ar</td>
+              <td>${date}</td>
+              <td class="admin-actions">
+                <button class='btn btn-success btn-sm me-1' onclick='confirmAction("${col}","${docSnap.id}","${type}",${JSON.stringify(d)})'>
+                  <i class="fas fa-check me-1"></i>
+                </button>
+                <button class='btn btn-danger btn-sm' onclick='cancelAction("${col}","${docSnap.id}")'>
+                  <i class="fas fa-times me-1"></i>
+                </button>
+              </td>
+            `;
+          } else if (type === 'proof') {
+            el.innerHTML = `
+              <td>${d.userName || d.userId}</td>
+              <td>${d.taskId || 'Inconnue'}</td>
+              <td>${date}</td>
+              <td class="admin-actions">
+                <button class='btn btn-success btn-sm me-1' onclick='openConfirmationModal("${docSnap.id}",${JSON.stringify(d)})'>
+                  <i class="fas fa-check me-1"></i>
+                </button>
+                <button class='btn btn-danger btn-sm' onclick='cancelAction("${col}","${docSnap.id}")'>
+                  <i class="fas fa-times me-1"></i>
+                </button>
+              </td>
+            `;
+          }
+          
+          c.appendChild(el);
+        });
+      } catch (error) {
+        console.error(`Error loading ${col}:`, error);
+      }
+    }
+
+    // --- Section Historique ---
+    async function loadHistory() {
+      try {
+        // Charger l'historique des dépôts
+        const depositQuery = query(collection(db, "depot_requests"), where("userId", "==", userId));
+        const depositSnap = await getDocs(depositQuery);
+        const depositList = document.getElementById('depositHistory');
+        depositList.innerHTML = '';
+        
+        if (depositSnap.empty) {
+          depositList.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-inbox"></i>
+                  <p>Aucun historique de dépôt</p>
+                  </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          depositSnap.forEach(doc => {
+            const d = doc.data();
+            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${date}</td>
+              <td>${d.montant} Ar</td>
+              <td>${d.method}</td>
+              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
+            `;
+            depositList.appendChild(row);
+          });
+        }
+        
+        // Charger l'historique des retraits
+        const withdrawQuery = query(collection(db, "retrait_requests"), where("userId", "==", userId));
+        const withdrawSnap = await getDocs(withdrawQuery);
+        const withdrawList = document.getElementById('withdrawHistory');
+        withdrawList.innerHTML = '';
+        
+        if (withdrawSnap.empty) {
+          withdrawList.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-inbox"></i>
+                  <p>Aucun historique de retrait</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          withdrawSnap.forEach(doc => {
+            const d = doc.data();
+            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${date}</td>
+              <td>${d.montant} Ar</td>
+              <td>${d.frais || 0} Ar</td>
+              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
+            `;
+            withdrawList.appendChild(row);
+          });
+        }
+        
+        // Charger l'historique des preuves
+        const proofQuery = query(collection(db, "submissions"), where("userId", "==", userId));
+        const proofSnap = await getDocs(proofQuery);
+        const proofList = document.getElementById('proofHistory');
+        proofList.innerHTML = '';
+        
+        if (proofSnap.empty) {
+          proofList.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-inbox"></i>
+                  <p>Aucun historique de preuve</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          proofSnap.forEach(doc => {
+            const d = doc.data();
+            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${date}</td>
+              <td>${d.taskId.substring(0, 8)}...</td>
+              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
+              <td>${d.status === 'confirmé' ? '50 Ar' : '-'}</td>
+            `;
+            proofList.appendChild(row);
+          });
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement de l'historique:", error);
+        showNotification("Erreur lors du chargement de l'historique", "danger");
+      }
+    }
+
+    // Ajout de la fonction à l'objet window pour la rendre accessible globalement
+    window.loadHistory = loadHistory;
+
+    window.openConfirmationModal = (submissionId, submissionData) => {
+      document.getElementById('confirmationTaskId').textContent = submissionData.taskId || 'Inconnu';
+      document.getElementById('confirmationName').value = submissionData.name || 'Non spécifié';
+      document.getElementById('confirmationProof').value = submissionData.proof || 'Aucun lien';
+      
+      // Configurer les boutons de confirmation
+      document.getElementById('confirmSubmissionBtn').onclick = () => {
+        confirmAction('submissions', submissionId, 'proof', submissionData);
+        bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
+      };
+      
+      document.getElementById('cancelSubmissionBtn').onclick = () => {
+        cancelAction('submissions', submissionId);
+        bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
+      };
+      
+      // Ouvrir la modal
+      new bootstrap.Modal(document.getElementById('confirmationModal')).show();
+    };
+
+    window.confirmAction = async (col, id, type, d) => {
+      try {
+        await updateDoc(doc(db, col, id), {status: 'confirmé'});
+        
+        const uRef = doc(db, 'users', d.userId);
+        const uSnap = await getDoc(uRef);
+        const u = uSnap.exists() ? uSnap.data() : {gain: 0, depot: 0};
+        
+        if (type === 'depot') {
+          await updateDoc(uRef, {depot: u.depot + d.montant});
+          showNotification('Dépôt confirmé!', 'success');
+        } else if (type === 'retrait') {
+          await updateDoc(uRef, {depot: u.depot - (d.montant + d.frais)});
+          showNotification('Retrait confirmé!', 'success');
+        } else if (type === 'proof') {
+          // Récupérer la tâche pour obtenir le budget
+          const taskRef = doc(db, 'tasks', d.taskId);
+          const taskSnap = await getDoc(taskRef);
+          if (!taskSnap.exists()) {
+            throw new Error('Tâche introuvable');
+          }
+          const taskData = taskSnap.data();
+          const taskBudget = taskData.budgetPerParticipant;
+          
+          // Mettre à jour le solde de gains du participant
+          await updateDoc(uRef, {gain: u.gain + taskBudget});
+          
+          // Ajouter la tâche complétée à la liste de l'utilisateur
+          const completedTasks = u.completedTasks || [];
+          if (!completedTasks.includes(d.taskId)) {
+            completedTasks.push(d.taskId);
+            await updateDoc(uRef, {completedTasks});
+          }
+          
+          // Mettre à jour la tâche : incrémenter le compteur de participants
+          const newCount = (taskData.completedCount || 0) + 1;
+          await updateDoc(taskRef, {
+            completedCount: newCount
+          });
+          
+          // Déduire le montant du dépôt du publisher
+          const publisherRef = doc(db, 'users', taskData.publisher);
+          const publisherSnap = await getDoc(publisherRef);
+          const publisherData = publisherSnap.data();
+          
+          await updateDoc(publisherRef, {
+            depot: publisherData.depot - taskBudget
+          });
+          
+          // Vérifier si le solde est épuisé et désactiver la tâche si nécessaire
+          const updatedPublisherSnap = await getDoc(publisherRef);
+          const updatedPublisherData = updatedPublisherSnap.data();
+          
+          if (updatedPublisherData.depot < taskBudget) {
+            await updateDoc(taskRef, {
+              status: 'inactive'
+            });
+            showNotification('Le solde de dépôt est épuisé pour cette tâche. Tâche désactivée.', 'info');
+          }
+          
+          showNotification(`Tâche confirmée! ${taskBudget} Ar crédités.`, 'success');
+        }
+        
+        loadAdminPanel();
+        loadBalances();
+        loadPublications();
+      } catch (error) {
+        showNotification("Erreur lors de la confirmation: " + error.message, 'danger');
+      }
+    };
+
+    window.cancelAction = async (col, id) => {
+      try {
+        await deleteDoc(doc(db, col, id));
+        showNotification('Demande annulée', 'info');
+        loadAdminPanel();
+      } catch (error) {
+        showNotification("Erreur lors de l'annulation: " + error.message, 'danger');
+      }
+    };
+
+    // Fonction pour réactiver une tâche
+    window.reactivateTask = async (taskId) => {
       try {
         const taskRef = doc(db, "tasks", taskId);
         const taskSnap = await getDoc(taskRef);
-        
         if (!taskSnap.exists()) {
           showNotification("Tâche introuvable", "danger");
           return;
         }
         
         const taskData = taskSnap.data();
-        
-        // Vérifier que la tâche est bien épuisée
-        if (taskData.status !== 'exhausted') {
-          showNotification("Cette tâche n'est pas épuisée", "warning");
-          return;
-        }
-        
-        // Calculer le budget nécessaire pour réactiver
-        const proofsLeft = taskData.proofCount - taskData.validatedProofs;
-        const budgetNeeded = proofsLeft * taskData.budgetPerProof;
-        
-        // Vérifier le solde de dépôt
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         const userData = userSnap.data();
         
-        if (userData.depot < budgetNeeded) {
-          showNotification(`Solde insuffisant. Il vous faut ${budgetNeeded} Ar pour réactiver`, "warning");
+        if (userData.depot < taskData.budgetPerParticipant) {
+          showNotification("Solde de dépôt insuffisant pour réactiver cette tâche", "warning");
           return;
         }
         
-        // Prélever le budget nécessaire
-        await updateDoc(userRef, {
-          depot: userData.depot - budgetNeeded
-        });
-        
-        // Mettre à jour la tâche
         await updateDoc(taskRef, {
-          status: 'active',
-          remainingBudget: budgetNeeded
+          status: "active"
         });
         
-        showNotification("Publication réactivée avec succès!", "success");
+        showNotification("Tâche réactivée avec succès!", "success");
         loadPublications();
-        loadBalances();
       } catch (error) {
         showNotification("Erreur lors de la réactivation: " + error.message, "danger");
-      }
-    };
-
-    // --- Section Admin ---
-    async function loadAdminPanel() {
-      // Charger les demandes admin
-    }
-
-    window.confirmAction = async (col, id, type, d) => {
-      try {
-        if (type === 'proof') {
-          // Récupérer les détails de la tâche
-          const taskRef = doc(db, 'tasks', d.taskId);
-          const taskSnap = await getDoc(taskRef);
-          
-          if (!taskSnap.exists()) {
-            throw new Error('Tâche introuvable');
-          }
-          
-          const taskData = taskSnap.data();
-          
-          // Vérifier que la tâche est toujours active
-          if (taskData.status !== 'active') {
-            showNotification("Cette tâche n'est plus active", "warning");
-            return;
-          }
-          
-          // Vérifier qu'il reste du budget
-          if (taskData.remainingBudget < taskData.budgetPerProof) {
-            // Marquer la tâche comme épuisée
-            await updateDoc(taskRef, { status: 'exhausted' });
-            showNotification("Budget épuisé pour cette tâche", "warning");
-            return;
-          }
-          
-          // Mettre à jour le budget restant
-          const newRemainingBudget = taskData.remainingBudget - taskData.budgetPerProof;
-          const newValidatedProofs = (taskData.validatedProofs || 0) + 1;
-          
-          await updateDoc(taskRef, {
-            remainingBudget: newRemainingBudget,
-            validatedProofs: newValidatedProofs,
-            status: newRemainingBudget > 0 ? 'active' : 'exhausted'
-          });
-          
-          // Créditer l'utilisateur
-          const userRef = doc(db, 'users', d.userId);
-          const userSnap = await getDoc(userRef);
-          const userData = userSnap.data();
-          
-          await updateDoc(userRef, {
-            gain: (userData.gain || 0) + taskData.budgetPerProof
-          });
-          
-          // Mettre à jour la soumission
-          await updateDoc(doc(db, col, id), {status: 'confirmé'});
-          
-          // Ajouter la tâche à la liste des tâches complétées
-          const completedTasks = userData.completedTasks || [];
-          if (!completedTasks.includes(d.taskId)) {
-            completedTasks.push(d.taskId);
-            await updateDoc(userRef, { completedTasks });
-          }
-          
-          showNotification(`Tâche confirmée! ${taskData.budgetPerProof} Ar crédités.`, 'success');
-        } else {
-          // ... (gestion des autres types d'actions admin)
-        }
-        
-        loadAdminPanel();
-        loadBalances();
-      } catch (error) {
-        showNotification("Erreur lors de la confirmation: " + error.message, 'danger');
       }
     };
 
