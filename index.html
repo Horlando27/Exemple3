@@ -1928,6 +1928,9 @@
           let typeBadge = '';
           let borderClass = '';
           
+          // Récupérer le budget (compatibilité avec ancienne version)
+          const budget = d.budgetPerParticipant || d.budget || 0;
+          
           if (d.taskType === 'social') {
             switch(d.socialMedia) {
               case 'facebook':
@@ -1961,7 +1964,7 @@
             <div class="task-card card ${borderClass}">
               <div class="card-body">
                 ${typeBadge}
-                <span class="task-badge">${d.budgetPerParticipant} Ar</span>
+                <span class="task-badge">${budget} Ar</span>
                 <h6 class="card-title">${icon} ${d.description}</h6>
                 <small class="d-block text-muted mb-2">Conditions: ${d.cond || 'Aucune'}</small>
                 <div class="small mt-2">ID: ${taskId.substring(0,8)}...</div>
@@ -2105,6 +2108,10 @@
             statusBadge = '<span class="badge bg-secondary">Inactive</span>';
           }
           
+          // Récupérer le budget (compatibilité avec ancienne version)
+          const budget = d.budgetPerParticipant || d.budget || 0;
+          const completedCount = d.completedCount || 0;
+          
           if (d.taskType === 'social') {
             switch(d.socialMedia) {
               case 'facebook': 
@@ -2134,18 +2141,18 @@
               <div class="card-body">
                 <h6>${icon} ${d.description}</h6>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="badge bg-warning">${d.budgetPerParticipant} Ar/part</span>
+                  <span class="badge bg-warning">${budget} Ar/part</span>
                   ${statusBadge}
                 </div>
                 <div class="mt-2 small">${typeText}</div>
                 <div class="mt-2 small">WhatsApp: ${d.whatsapp || 'Non configuré'}</div>
                 <div class="publication-stats">
                   <div class="stat-item-pub">
-                    <div class="stat-number-pub">${d.completedCount || 0}</div>
+                    <div class="stat-number-pub">${completedCount}</div>
                     <div class="stat-label-pub">Participants</div>
                   </div>
                   <div class="stat-item-pub">
-                    <div class="stat-number-pub">${(d.completedCount || 0) * (d.budgetPerParticipant || 0)} Ar</div>
+                    <div class="stat-number-pub">${completedCount * budget} Ar</div>
                     <div class="stat-label-pub">Dépensé</div>
                   </div>
                 </div>
@@ -2216,7 +2223,7 @@
           publisher: userId,
           publisherName: userName,
           description: desc,
-          budgetPerParticipant,
+          budgetPerParticipant: budgetPerParticipant,
           url,
           cond,
           taskType,
@@ -2449,7 +2456,7 @@
       };
       
       // Ouvrir la modal
-      new bootstrap.Modal(document.getElementById('confirmationModal')).show();
+      new bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).show();
     };
 
     window.confirmAction = async (col, id, type, d) => {
@@ -2474,7 +2481,9 @@
             throw new Error('Tâche introuvable');
           }
           const taskData = taskSnap.data();
-          const taskBudget = taskData.budgetPerParticipant;
+          
+          // Compatibilité avec ancienne version
+          const taskBudget = taskData.budgetPerParticipant || taskData.budget || 0;
           
           // Mettre à jour le solde de gains du participant
           await updateDoc(uRef, {gain: u.gain + taskBudget});
@@ -2548,7 +2557,10 @@
         const userSnap = await getDoc(userRef);
         const userData = userSnap.data();
         
-        if (userData.depot < taskData.budgetPerParticipant) {
+        // Compatibilité avec ancienne version
+        const taskBudget = taskData.budgetPerParticipant || taskData.budget || 0;
+        
+        if (userData.depot < taskBudget) {
           showNotification("Solde de dépôt insuffisant pour réactiver cette tâche", "warning");
           return;
         }
