@@ -36,7 +36,6 @@
       --whatsapp: #25D366;
       --whatsapp-dark: #128C7E;
       --reactivate: #FF6B00;
-      --bonus: #ff9e00;
     }
     
     * {
@@ -193,11 +192,6 @@
       color: white;
     }
     
-    .bonus-card {
-      background: linear-gradient(135deg, var(--bonus), #ff6d00);
-      color: white;
-    }
-    
     .balance-label {
       font-size: 0.9rem;
       text-transform: uppercase;
@@ -276,16 +270,6 @@
     
     .btn-reactivate:hover {
       background: #e05a00;
-      color: white;
-    }
-    
-    .btn-transfer {
-      background: var(--bonus);
-      color: white;
-    }
-    
-    .btn-transfer:hover {
-      background: #e68a00;
       color: white;
     }
     
@@ -1083,73 +1067,6 @@
       font-weight: 600;
     }
     
-    /* Barre de recherche des tâches */
-    .task-search-container {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 1.5rem;
-    }
-    
-    .task-search-container input {
-      flex: 1;
-      border-radius: 10px;
-      padding: 0.85rem 1.25rem;
-      border: 1px solid var(--gray-300);
-    }
-    
-    .task-search-container button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0 1.75rem;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-    
-    /* Tableau de parrainage */
-    .referrals-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      margin-top: 1.25rem;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      border: 1px solid var(--gray-200);
-    }
-    
-    .referrals-table th {
-      background: var(--bonus);
-      color: white;
-      padding: 1rem;
-      text-align: left;
-      font-weight: 600;
-    }
-    
-    .referrals-table td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--gray-200);
-    }
-    
-    .referrals-table tr:last-child td {
-      border-bottom: none;
-    }
-    
-    .referrals-table tr:nth-child(even) {
-      background-color: #fff8e1;
-    }
-    
-    .referrals-table tr:hover {
-      background-color: #ffecb3;
-    }
-    
-    .referral-bonus {
-      background: #fff8e1;
-      padding: 1.25rem;
-      border-radius: var(--border-radius);
-      margin-top: 1.5rem;
-      border: 1px solid #ffd54f;
-    }
-    
     @media (max-width: 768px) {
       .section-card {
         padding: 1.5rem;
@@ -1173,7 +1090,7 @@
         font-size: 1.6rem;
       }
       
-      .admin-table, .history-table, .tasks-table, .referrals-table {
+      .admin-table, .history-table, .tasks-table {
         display: block;
         overflow-x: auto;
       }
@@ -1190,10 +1107,6 @@
       .publication-stats {
         flex-direction: column;
         gap: 0.5rem;
-      }
-      
-      .row.mb-4 > div {
-        margin-bottom: 1rem;
       }
     }
     
@@ -1380,7 +1293,7 @@
         <a class="nav-link" href="#historySection" onclick="showSection('historySection'); loadHistory()"><i class="fas fa-history me-1"></i> Historique</a>
       </nav>
 
-      <!-- Admin Section -->
+      <!-- Admin Section - CORRECTION PRINCIPALE -->
       <div id="adminSection" class="mb-5" style="display:none;">
         <h4 class="section-title"><i class="fas fa-cog me-2"></i>Admin Panel</h4>
         
@@ -1403,11 +1316,11 @@
               </tr>
             </thead>
             <tbody id="depotList">
+              <!-- Les données seront chargées dynamiquement -->
               <tr>
                 <td colspan="5" class="text-center py-4">
-                  <div class="empty-state py-0">
-                    <i class="fas fa-inbox"></i>
-                    <p>Aucune demande de dépôt en attente</p>
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                   </div>
                 </td>
               </tr>
@@ -1434,11 +1347,11 @@
               </tr>
             </thead>
             <tbody id="retraitList">
+              <!-- Les données seront chargées dynamiquement -->
               <tr>
                 <td colspan="5" class="text-center py-4">
-                  <div class="empty-state py-0">
-                    <i class="fas fa-inbox"></i>
-                    <p>Aucune demande de retrait en attente</p>
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                   </div>
                 </td>
               </tr>
@@ -1464,11 +1377,11 @@
               </tr>
             </thead>
             <tbody id="submissionList">
+              <!-- Les données seront chargées dynamiquement -->
               <tr>
                 <td colspan="4" class="text-center py-4">
-                  <div class="empty-state py-0">
-                    <i class="fas fa-inbox"></i>
-                    <p>Aucune soumission de preuve en attente</p>
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                   </div>
                 </td>
               </tr>
@@ -1477,522 +1390,7 @@
         </div>
       </div>
 
-      <!-- Compte Section -->
-      <div id="accountSection" class="mb-5">
-        <h4 class="section-title"><i class="fas fa-wallet me-2"></i>Compte</h4>
-        <div class="row mb-4">
-          <div class="col-md-4">
-            <div class="balance-card gain-card">
-              <div class="balance-label">Solde de Gains</div>
-              <div id="gainBalance" class="balance-amount">0 Ar</div>
-              <div class="mt-2 small">Ce solde peut être retiré</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="balance-card deposit-card">
-              <div class="balance-label">Solde de Dépôt</div>
-              <div id="depositBalance" class="balance-amount">0 Ar</div>
-              <div class="mt-2 small">Utilisé pour publier des tâches</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="balance-card bonus-card">
-              <div class="balance-label">Solde Bonus</div>
-              <div id="bonusBalance" class="balance-amount">0 Ar</div>
-              <div class="mt-2 small">Gains de parrainage</div>
-              <button class="btn btn-sm btn-light mt-2" onclick="transferBonus()" style="border-radius: 20px;">
-                <i class="fas fa-exchange-alt me-1"></i> Envoyer vers Gains
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Tableau de parrainage -->
-        <div class="section-card mb-4">
-          <h5><i class="fas fa-users me-2"></i>Programme de Parrainage</h5>
-          <p>Vous avez <strong id="referralsCount">0</strong> filleul(s). Gagnez 5% de leurs gains!</p>
-          
-          <div class="mt-3">
-            <h6>Vos filleuls</h6>
-            <div class="table-responsive">
-              <table class="referrals-table">
-                <thead>
-                  <tr>
-                    <th>Nom</th>
-                    <th>Date d'inscription</th>
-                    <th>Gains générés</th>
-                  </tr>
-                </thead>
-                <tbody id="referralsList">
-                  <tr>
-                    <td colspan="3" class="text-center py-3">
-                      <div class="empty-state py-0">
-                        <i class="fas fa-users"></i>
-                        <p>Aucun filleul pour le moment</p>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          
-          <div class="referral-bonus">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6>Total des gains de parrainage</h6>
-                <div id="totalReferralBonus" class="fs-4 fw-bold">0 Ar</div>
-              </div>
-              <div>
-                <button class="btn btn-transfer" onclick="transferBonus()">
-                  <i class="fas fa-exchange-alt me-1"></i> Transférer vers gains
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="d-grid gap-3 d-md-flex">
-          <button class="btn btn-action btn-deposit" data-bs-toggle="modal" data-bs-target="#depositModal">
-            <i class="fas fa-plus-circle me-1"></i> Dépôt
-          </button>
-          <button class="btn btn-action btn-withdraw" data-bs-toggle="modal" data-bs-target="#withdrawModal">
-            <i class="fas fa-minus-circle me-1"></i> Retrait
-          </button>
-        </div>
-      </div>
-
-      <!-- Tasks Section - Modifiée pour utiliser un tableau -->
-      <div id="tasksSection" class="mb-5">
-        <h4 class="section-title"><i class="fas fa-tasks me-2"></i>Asa</h4>
-        <div class="alert alert-info">
-          <i class="fas fa-info-circle me-2"></i>Complétez des tâches pour gagner de l'argent. Chaque tâche validée rapporte 50 Ar.
-        </div>
-        
-        <!-- Barre de recherche -->
-        <div class="task-search-container">
-          <input type="text" id="taskSearchInput" class="form-control" placeholder="Rechercher par description ou ID de tâche...">
-          <button class="btn btn-primary" type="button" onclick="searchTasks()">
-            <i class="fas fa-search me-1"></i> Hitady
-          </button>
-        </div>
-        
-        <div class="table-responsive">
-          <table class="tasks-table">
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Gains</th>
-                <th>Réseau social</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="taskList">
-              <tr>
-                <td colspan="4" class="text-center py-4">
-                  <div class="empty-state py-0">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Chargement des tâches disponibles...</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Publication Section -->
-      <div id="publicationSection" class="mb-5" style="display:none;">
-        <h4 class="section-title"><i class="fas fa-bullhorn me-2"></i>Publication</h4>
-        <div class="section-card mb-4">
-          <form id="publishForm" class="mb-3">
-            <div class="mb-3">
-              <label class="form-label">Description de la tâche</label>
-              <textarea id="pubDescription" class="form-control mb-2" placeholder="Décrivez la tâche à réaliser" rows="3" required></textarea>
-            </div>
-            
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Budget par participant (≥ 5Ar)</label>
-                <input id="pubBudgetPerParticipant" type="number" class="form-control" placeholder="Ex: 5" min="5" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Type de tâche</label>
-                <select id="taskType" class="form-select" required>
-                  <option value="">Choisir un type</option>
-                  <option value="social">Réseau social</option>
-                  <option value="website">Inscription site web</option>
-                </select>
-              </div>
-            </div>
-            
-            <div class="mb-3" id="socialMediaContainer" style="display:none;">
-              <label class="form-label">Réseau social</label>
-              <select id="socialMedia" class="form-select">
-                <option value="">Sélectionner un réseau</option>
-                <option value="facebook">Facebook</option>
-                <option value="twitter">Twitter</option>
-                <option value="instagram">Instagram</option>
-                <option value="telegram">Télégramme</option>
-                <option value="youtube">YouTube</option>
-                <option value="tiktok">TikTok</option>
-                <option value="linkedin">LinkedIn</option>
-              </select>
-            </div>
-            
-            <div class="mb-3">
-              <label class="form-label">URL/Information</label>
-              <input id="pubURL" type="text" class="form-control" placeholder="Lien ou référence" required>
-            </div>
-            
-            <div class="mb-3">
-              <label class="form-label">Conditions</label>
-              <textarea id="pubConditions" class="form-control" placeholder="Conditions à respecter" rows="3"></textarea>
-            </div>
-            
-            <button class="btn btn-primary btn-action">
-              <i class="fas fa-paper-plane me-1"></i> Publier la tâche
-            </button>
-          </form>
-        </div>
-        
-        <!-- Nouvelle section WhatsApp -->
-        <div class="section-card mb-4">
-          <div class="whatsapp-section">
-            <h5><i class="fab fa-whatsapp me-2"></i>Configuration WhatsApp</h5>
-            <p>Spécifiez le numéro WhatsApp où les preuves doivent être envoyées</p>
-            
-            <div class="whatsapp-input-group">
-              <input type="tel" id="pubWhatsApp" class="form-control" placeholder="261XXXXXXXXX" required>
-              <button type="button" id="saveWhatsAppBtn">
-                <i class="fas fa-save me-1"></i> Enregistrer
-              </button>
-            </div>
-            
-            <div class="proof-container mt-3">
-              <p class="proof-title"><i class="fas fa-info-circle"></i> Les preuves seront envoyées à ce numéro WhatsApp</p>
-              <p class="small">Après avoir enregistré le numéro, il sera utilisé pour toutes les publications suivantes.</p>
-            </div>
-          </div>
-        </div>
-        
-        <h5 class="mt-4 mb-3"><i class="fas fa-list me-2"></i>Mes Publications</h5>
-        <div id="publicationList" class="row">
-          <div class="col-12">
-            <div class="empty-state">
-              <i class="fas fa-spinner fa-spin"></i>
-              <p>Chargement de vos publications...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Settings Section -->
-      <div id="settingsSection" class="mb-5">
-        <h4 class="section-title"><i class="fas fa-sliders-h me-2"></i>Paramètres</h4>
-        <div class="section-card">
-          <h5><i class="fas fa-user-friends me-2"></i>Programme de Parrainage</h5>
-          <p>Invitez vos amis et gagnez 10% de leurs gains!</p>
-          <div class="mt-3">
-            <p class="mb-1">Votre code de parrainage:</p>
-            <div class="referral-code" id="referralCode">Chargement...</div>
-          </div>
-          
-          <div class="referral-link">
-            <input type="text" class="form-control" id="referralLink" readonly>
-            <button class="btn btn-outline-primary" onclick="copyReferralLink()">
-              <i class="fas fa-copy"></i>
-            </button>
-          </div>
-          
-          <div class="mt-3">
-            <button class="btn btn-primary" onclick="shareReferral()" style="background: var(--primary); border: none; padding: 0.75rem 1.5rem; font-weight: 600; border-radius: 10px;">
-              <i class="fas fa-share-alt me-1"></i> Partager
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Nouvelle section Historique -->
-      <div id="historySection" class="mb-5" style="display:none;">
-        <h4 class="section-title"><i class="fas fa-history me-2"></i>Historique des Transactions</h4>
-        
-        <!-- Historique des Dépôts -->
-        <div class="history-section">
-          <h5 class="mb-3"><i class="fas fa-money-bill-wave me-2"></i>Historique des Dépôts</h5>
-          <div class="table-responsive">
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Montant</th>
-                  <th>Méthode</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody id="depositHistory">
-                <tr>
-                  <td colspan="4" class="text-center py-4">
-                    <div class="empty-state py-0">
-                      <i class="fas fa-spinner fa-spin"></i>
-                      <p>Chargement de l'historique des dépôts...</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <!-- Historique des Retraits -->
-        <div class="history-section">
-          <h5 class="mb-3"><i class="fas fa-hand-holding-usd me-2"></i>Historique des Retraits</h5>
-          <div class="table-responsive">
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Montant</th>
-                  <th>Frais</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody id="withdrawHistory">
-                <tr>
-                  <td colspan="4" class="text-center py-4">
-                    <div class="empty-state py-0">
-                      <i class="fas fa-spinner fa-spin"></i>
-                      <p>Chargement de l'historique des retraits...</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <!-- Historique des Preuves -->
-        <div class="history-section">
-          <h5 class="mb-3"><i class="fas fa-check-circle me-2"></i>Historique des Preuves</h5>
-          <div class="table-responsive">
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Tâche</th>
-                  <th>Statut</th>
-                  <th>Gain</th>
-                </tr>
-              </thead>
-              <tbody id="proofHistory">
-                <tr>
-                  <td colspan="4" class="text-center py-4">
-                    <div class="empty-state py-0">
-                      <i class="fas fa-spinner fa-spin"></i>
-                      <p>Chargement de l'historique des preuves...</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modals -->
-      <!-- Deposit Modal -->
-      <div class="modal fade" id="depositModal" tabindex="-1">
-        <div class="modal-dialog">
-          <form id="depositForm" class="modal-content">
-            <div class="modal-header card-header-gradient">
-              <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Dépôt</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Montant (≥ 2000 Ar)</label>
-                <input id="depositAmount" type="number" class="form-control" placeholder="Ex: 2000" min="2000" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Méthode de Paiement</label>
-                <select id="depositMethod" class="form-select" required>
-                  <option value="">Sélectionnez une méthode</option>
-                  <option value="PAYEER">PAYEER</option>
-                  <option value="Orange Money">Orange Money</option>
-                  <option value="Airtel Money">Airtel Money</option>
-                </select>
-              </div>
-              
-              <!-- Container pour PAYEER -->
-              <div id="payeerContainer" class="payeer-container">
-                <h6><i class="fas fa-wallet me-2"></i>Compte PAYEER</h6>
-                <p>Utilisez ce numéro de compte pour effectuer votre dépôt :</p>
-                
-                <div class="copyable-input">
-                  <input type="text" id="payeerAccount" value="P1132657024" readonly>
-                  <button type="button" class="btn btn-primary" onclick="copyPayeerAccount()">
-                    <i class="fas fa-copy"></i>
-                  </button>
-                </div>
-                
-                <div class="deposit-info">
-                  <p><i class="fas fa-info-circle me-2"></i>Après avoir effectué le paiement, envoyez la preuve de paiement sur Facebook à :</p>
-                  <p class="text-center fw-bold"><a href="https://www.facebook.com/profile.php?id=61578558871898" target="_blank">Envoyé la preuve 
-</a></p>
-                  <p class="small">Capture d'écran du paiement requis avant de soumettre ce formulaire</p>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-              <button type="submit" class="btn btn-primary" style="background: var(--primary); border: none; padding: 0.65rem 1.25rem; font-weight: 600; border-radius: 10px;">Envoyer</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- Withdraw Modal -->
-      <div class="modal fade" id="withdrawModal" tabindex="-1">
-        <div class="modal-dialog">
-          <form id="withdrawForm" class="modal-content">
-            <div class="modal-header card-header-gradient">
-              <h5 class="modal-title"><i class="fas fa-minus-circle me-2"></i>Retrait</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Nom Complet</label>
-                <input id="withdrawName" type="text" class="form-control" placeholder="Votre nom" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Numéro de Téléphone</label>
-                <input id="withdrawPhone" type="tel" class="form-control" placeholder="Votre numéro" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Montant (≥ 500 Ar)</label>
-                <input id="withdrawAmount" type="number" class="form-control" placeholder="Ex: 500" min="500" required>
-                <div class="form-text">Frais: 10% du montant</div>
-                <div class="form-text text-danger">Attention: Seul le solde de gains peut être retiré</div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-              <button type="submit" class="btn btn-primary" style="background: var(--primary); border: none; padding: 0.65rem 1.25rem; font-weight: 600; border-radius: 10px;">Envoyer</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- Proof Modal -->
-      <div class="modal fade" id="proofModal" tabindex="-1">
-        <div class="modal-dialog">
-          <form id="submitProofForm" class="modal-content">
-            <input id="taskIdHidden" type="hidden">
-            <div class="modal-header card-header-gradient">
-              <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i>Envoyer Preuve</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Votre Identifiant</label>
-                <input id="userName" type="text" class="form-control" placeholder="Nom/Email/Instagram" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Preuve de Réalisation</label>
-                <textarea id="userProof" class="form-control" placeholder="Texte ou URL d'image" rows="3" required></textarea>
-                <div class="form-text">Fournissez un lien ou décrivez votre preuve</div>
-              </div>
-              
-              <div class="proof-container">
-                <p class="proof-title"><i class="fas fa-info-circle"></i> Envoyer une capture d'écran par WhatsApp</p>
-                <a href="#" id="whatsappProofBtn" target="_blank" class="btn whatsapp-btn">
-                  <i class="fab fa-whatsapp"></i> Envoyer par WhatsApp
-                </a>
-                <p class="mt-2 small">Après avoir envoyé votre capture d'écran sur WhatsApp, soumettez votre nom ci-dessus pour que nous puissions vous créditer.</p>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-              <button type="submit" class="btn btn-primary" style="background: var(--primary); border: none; padding: 0.65rem 1.25rem; font-weight: 600; border-radius: 10px;">Envoyer</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      
-      <!-- Task Details Modal (Nouveau) -->
-      <div class="modal fade" id="taskDetailsModal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header card-header-gradient">
-              <h5 class="modal-title"><i class="fas fa-tasks me-2"></i>Détails de la tâche</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Description</label>
-                <p id="taskDescription" class="form-control-static"></p>
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label">Conditions</label>
-                <p id="taskConditions" class="form-control-static"></p>
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label">Gains</label>
-                <p id="taskGains" class="form-control-static"></p>
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label">Réseau social</label>
-                <p id="taskSocial" class="form-control-static"></p>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" id="taskAccessBtn" target="_blank" class="btn btn-primary">
-                <i class="fas fa-external-link-alt me-1"></i> Accéder à la tâche
-              </a>
-              <button class="btn btn-success" id="taskSendProofBtn">
-                <i class="fas fa-paper-plane me-1"></i> Envoyer preuve
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Confirmation Modal -->
-      <div class="modal fade" id="confirmationModal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header card-header-gradient">
-              <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i>Confirmer la Soumission</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">ID de la Tâche</label>
-                <div class="admin-task-id" id="confirmationTaskId">Chargement...</div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Nom du Participant</label>
-                <input type="text" class="form-control" id="confirmationName" readonly>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Lien de Preuve</label>
-                <input type="text" class="form-control" id="confirmationProof" readonly>
-              </div>
-              <div class="text-center mt-4">
-                <button class="btn btn-success me-2" id="confirmSubmissionBtn">
-                  <i class="fas fa-check me-1"></i> Confirmer
-                </button>
-                <button class="btn btn-danger" id="cancelSubmissionBtn">
-                  <i class="fas fa-times me-1"></i> Annuler
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Autres sections... -->
     </div>
     
     <footer>
@@ -2010,7 +1408,7 @@
     import { 
       getFirestore, collection, addDoc, getDoc, doc,
       serverTimestamp, query, where, getDocs, setDoc,
-      updateDoc, deleteDoc, onSnapshot, arrayUnion
+      updateDoc, deleteDoc, onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
     // Firebase configuration
@@ -2044,29 +1442,6 @@
     const appContainer = document.getElementById('appContainer');
     const logoutBtn = document.getElementById('logoutBtn');
     const welcomeMessage = document.getElementById('welcomeMessage');
-    const taskTypeSelect = document.getElementById('taskType');
-    const socialMediaContainer = document.getElementById('socialMediaContainer');
-    const saveWhatsAppBtn = document.getElementById('saveWhatsAppBtn');
-    const depositMethodSelect = document.getElementById('depositMethod');
-    const payeerContainer = document.getElementById('payeerContainer');
-
-    // Gestion du type de tâche
-    taskTypeSelect.addEventListener('change', function() {
-      if (this.value === 'social') {
-        socialMediaContainer.style.display = 'block';
-      } else {
-        socialMediaContainer.style.display = 'none';
-      }
-    });
-
-    // Gestion de la méthode de dépôt
-    depositMethodSelect.addEventListener('change', function() {
-      if (this.value === 'PAYEER') {
-        payeerContainer.style.display = 'block';
-      } else {
-        payeerContainer.style.display = 'none';
-      }
-    });
 
     // Fonction pour afficher une section
     window.showSection = (sectionId) => {
@@ -2088,8 +1463,6 @@
         loadTasks();
       } else if (sectionId === 'publicationSection' && isAdmin) {
         loadPublications();
-      } else if (sectionId === 'accountSection') {
-        loadReferrals();
       }
     };
 
@@ -2102,7 +1475,6 @@
         userName = userData.name;
         isAdmin = userData.isAdmin;
         userWhatsApp = userData.whatsapp || "";
-        userReferrer = userData.referrer || null;
         
         // Masquer la page de connexion et afficher l'application
         loginPage.style.display = 'none';
@@ -2150,13 +1522,10 @@
             securityCode: securityCode,
             gain: 0,
             depot: 0,
-            bonus: 0,
             createdAt: serverTimestamp(),
             isAdmin: false,
             completedTasks: [],
-            whatsapp: "",
-            referrals: [],
-            referrer: null
+            whatsapp: ""
           });
         }
         
@@ -2169,15 +1538,13 @@
         userName = userData.name;
         isAdmin = userData.isAdmin || false;
         userWhatsApp = userData.whatsapp || "";
-        userReferrer = userData.referrer || null;
         
         // Sauvegarder dans localStorage
         localStorage.setItem('milaVolaUser', JSON.stringify({
           id: userId,
           name: userName,
           isAdmin: isAdmin,
-          whatsapp: userWhatsApp,
-          referrer: userReferrer
+          whatsapp: userWhatsApp
         }));
         
         // Mettre à jour le message de bienvenue
@@ -2241,22 +1608,12 @@
           securityCode: securityCode,
           gain: 0,
           depot: 0,
-          bonus: 0, // Solde bonus de parrainage
-          referrer: referrerId, // ID du parrain
-          referrals: [], // Liste des filleuls
+          referrer: referrerId,
           createdAt: serverTimestamp(),
           isAdmin: false,
           completedTasks: [],
           whatsapp: ""
         });
-        
-        // Si le parrain est valide, mettre à jour son compte
-        if (referrerId) {
-          const referrerRef = doc(db, "users", referrerId);
-          await updateDoc(referrerRef, {
-            referrals: arrayUnion(userID)
-          });
-        }
         
         // Connecter l'utilisateur après inscription
         userId = userID;
@@ -2313,636 +1670,24 @@
       
       // Afficher la section Compte par défaut
       document.getElementById('accountSection').style.display = 'block';
-      
-      // Setup real-time listeners
-      setupRealtimeListeners();
     }
 
-    // --- Section Compte ---
-    async function loadBalances() {
-      try {
-        const userRef = doc(db, "users", userId);
-        const snap = await getDoc(userRef);
-        const data = snap.exists() ? snap.data() : { gain: 0, depot: 0, bonus: 0 };
-        document.getElementById("gainBalance").textContent = data.gain + " Ar";
-        document.getElementById("depositBalance").textContent = data.depot + " Ar";
-        document.getElementById("bonusBalance").textContent = data.bonus + " Ar";
-        document.getElementById("referralsCount").textContent = data.referrals ? data.referrals.length : 0;
-        document.getElementById("totalReferralBonus").textContent = data.bonus + " Ar";
-      } catch (error) {
-        console.error("Error loading balances:", error);
-      }
-    }
-
-    // Charger les filleuls
-    async function loadReferrals() {
-      try {
-        const list = document.getElementById('referralsList');
-        list.innerHTML = '';
-        
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        
-        if (!userData.referrals || userData.referrals.length === 0) {
-          list.innerHTML = `
-            <tr>
-              <td colspan="3" class="text-center py-3">
-                <div class="empty-state py-0">
-                  <i class="fas fa-users"></i>
-                  <p>Aucun filleul pour le moment</p>
-                </div>
-              </td>
-            </tr>
-          `;
-          return;
-        }
-        
-        // Pour chaque filleul, récupérer les détails
-        for (const referralId of userData.referrals) {
-          const referralRef = doc(db, "users", referralId);
-          const referralSnap = await getDoc(referralRef);
-          
-          if (referralSnap.exists()) {
-            const referralData = referralSnap.data();
-            const date = referralData.createdAt ? new Date(referralData.createdAt.seconds * 1000).toLocaleDateString() : 'Date inconnue';
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${referralData.name}</td>
-              <td>${date}</td>
-              <td>${referralData.gain ? (referralData.gain * 0.05).toFixed(2) : '0'} Ar</td>
-            `;
-            list.appendChild(row);
-          }
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement des filleuls:", error);
-      }
-    }
-
-    // Transférer le bonus vers les gains
-    async function transferBonus() {
-      try {
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        
-        if (userData.bonus <= 0) {
-          showNotification("Votre solde bonus est nul.", "warning");
-          return;
-        }
-        
-        await updateDoc(userRef, {
-          gain: userData.gain + userData.bonus,
-          bonus: 0
-        });
-        
-        showNotification(`Solde bonus transféré: ${userData.bonus} Ar ajoutés à vos gains.`, "success");
-        loadBalances();
-      } catch (error) {
-        showNotification("Erreur lors du transfert: " + error.message, "danger");
-      }
-    }
-
-    document.getElementById("depositForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const montant = parseFloat(document.getElementById("depositAmount").value);
-      const method = document.getElementById("depositMethod").value;
-      
-      if (montant >= 2000 && method) {
-        try {
-          await addDoc(collection(db, "depot_requests"), {
-            userId, userName, montant, method,
-            status: "en attente", createdAt: serverTimestamp()
-          });
-          showNotification("Dépôt voaray! Votre demande est en cours de traitement.", "success");
-          
-          // Reset form and close modal
-          e.target.reset();
-          bootstrap.Modal.getInstance(document.getElementById('depositModal')).hide();
-        } catch (error) {
-          showNotification("Erreur lors du dépôt: " + error.message, "danger");
-        }
-      } else {
-        showNotification("Ampidiro araka ny tokony ho izy ny vola (min 2000 Ar) sy fomba fandoavana.", "warning");
-      }
-    });
-
-    document.getElementById("withdrawForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const nom = document.getElementById("withdrawName").value;
-      const phone = document.getElementById("withdrawPhone").value;
-      const montant = parseFloat(document.getElementById("withdrawAmount").value);
-      
-      try {
-        // Vérifier le solde de gains
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        
-        if (montant > userData.gain) {
-          showNotification("Solde de gains insuffisant. Vous ne pouvez retirer que votre solde de gains.", "warning");
-          return;
-        }
-        
-        if (montant >= 500) {
-          const frais = montant * 0.1;
-          await addDoc(collection(db, "retrait_requests"), {
-            userId, userName, nom, phone, montant, frais,
-            status: "en attente", createdAt: serverTimestamp()
-          });
-          showNotification("Retrait voaray! Votre demande est en cours de traitement.", "success");
-          
-          // Reset form and close modal
-          e.target.reset();
-          bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
-        } else {
-          showNotification("Tsara indrindra ny ≥ 500 Ar", "warning");
-        }
-      } catch (error) {
-        showNotification("Erreur lors du retrait: " + error.message, "danger");
-      }
-    });
-
-    // --- Section Asa (Proof) ---
-    async function loadTasks() {
-      try {
-        const list = document.getElementById("taskList");
-        list.innerHTML = '';
-        
-        // Récupérer les tâches complétées par l'utilisateur
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const completedTasks = userSnap.exists() ? userSnap.data().completedTasks || [] : [];
-        
-        // Récupérer les soumissions en attente de l'utilisateur
-        const pendingSubmissions = new Set();
-        try {
-          const submissionsQuery = query(collection(db, "submissions"), 
-            where("userId", "==", userId),
-            where("status", "==", "en attente"));
-          const submissionsSnap = await getDocs(submissionsQuery);
-          submissionsSnap.forEach(doc => {
-            const data = doc.data();
-            pendingSubmissions.add(data.taskId);
-          });
-        } catch (error) {
-          console.error("Erreur lors du chargement des soumissions en attente:", error);
-        }
-        
-        const q = query(collection(db, "tasks"), where("status","==","active"));
-        const snap = await getDocs(q);
-        
-        if (snap.empty) {
-          list.innerHTML = `
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                <div class="empty-state py-0">
-                  <i class="fas fa-tasks"></i>
-                  <p>Aucune tâche disponible pour le moment</p>
-                </div>
-              </td>
-            </tr>
-          `;
-          return;
-        }
-        
-        snap.forEach(docSnap => {
-          const d = docSnap.data();
-          const taskId = docSnap.id;
-          
-          // Vérifier si la tâche est déjà complétée
-          const isCompleted = completedTasks.includes(taskId);
-          // Vérifier si l'utilisateur a une soumission en attente pour cette tâche
-          const isPending = pendingSubmissions.has(taskId);
-          
-          // Récupérer le budget (compatibilité avec ancienne version)
-          const budget = d.budgetPerParticipant || d.budget || 0;
-          
-          let socialText = '';
-          
-          if (d.taskType === 'social') {
-            switch(d.socialMedia) {
-              case 'facebook':
-                socialText = 'Facebook';
-                break;
-              case 'twitter':
-                socialText = 'Twitter';
-                break;
-              case 'instagram':
-                socialText = 'Instagram';
-                break;
-              case 'telegram':
-                socialText = 'Télégramme';
-                break;
-              case 'youtube':
-                socialText = 'YouTube';
-                break;
-              case 'tiktok':
-                socialText = 'TikTok';
-                break;
-              case 'linkedin':
-                socialText = 'LinkedIn';
-                break;
-            }
-          } else if (d.taskType === 'website') {
-            socialText = 'Site Web';
-          }
-          
-          const el = document.createElement('tr');
-          el.className = isCompleted ? 'completed-task' : '';
-          
-          el.innerHTML = `
-            <td>${d.description}</td>
-            <td>${budget} Ar</td>
-            <td>${socialText}</td>
-            <td>
-              <button class="btn btn-sm btn-primary" onclick="showTaskDetails('${taskId}', '${d.whatsapp || ''}')">
-                <i class="fas fa-eye me-1"></i> Ouvrir
-              </button>
-              ${isCompleted ? '<span class="badge bg-success ms-2">Complétée</span>' : 
-                (isPending ? '<span class="badge bg-warning ms-2">En attente</span>' : '')}
-            </td>
-          `;
-          list.appendChild(el);
-        });
-      } catch (error) {
-        console.error("Error loading tasks:", error);
-      }
-    }
-
-    // Fonction de recherche de tâches
-    function searchTasks() {
-      const searchTerm = document.getElementById('taskSearchInput').value.toLowerCase();
-      const table = document.getElementById('taskList');
-      const rows = table.getElementsByTagName('tr');
-      
-      for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let found = false;
-        
-        for (let j = 0; j < cells.length; j++) {
-          const cellText = cells[j].textContent || cells[j].innerText;
-          if (cellText.toLowerCase().includes(searchTerm)) {
-            found = true;
-            break;
-          }
-        }
-        
-        if (found) {
-          rows[i].style.display = '';
-        } else {
-          rows[i].style.display = 'none';
-        }
-      }
-    }
-
-    window.showTaskDetails = async (taskId, whatsapp) => {
-      try {
-        const taskRef = doc(db, "tasks", taskId);
-        const taskSnap = await getDoc(taskRef);
-        
-        if (taskSnap.exists()) {
-          const taskData = taskSnap.data();
-          
-          // Récupérer le budget (compatibilité avec ancienne version)
-          const budget = taskData.budgetPerParticipant || taskData.budget || 0;
-          
-          let socialText = '';
-          
-          if (taskData.taskType === 'social') {
-            switch(taskData.socialMedia) {
-              case 'facebook':
-                socialText = 'Facebook';
-                break;
-              case 'twitter':
-                socialText = 'Twitter';
-                break;
-              case 'instagram':
-                socialText = 'Instagram';
-                break;
-              case 'telegram':
-                socialText = 'Télégramme';
-                break;
-              case 'youtube':
-                socialText = 'YouTube';
-                break;
-              case 'tiktok':
-                socialText = 'TikTok';
-                break;
-              case 'linkedin':
-                socialText = 'LinkedIn';
-                break;
-            }
-          } else if (taskData.taskType === 'website') {
-            socialText = 'Site Web';
-          }
-          
-          // Remplir les détails de la tâche
-          document.getElementById('taskDescription').textContent = taskData.description;
-          document.getElementById('taskConditions').textContent = taskData.cond || 'Aucune condition spécifique';
-          document.getElementById('taskGains').textContent = `${budget} Ar`;
-          document.getElementById('taskSocial').textContent = socialText;
-          
-          // Mettre à jour le lien d'accès à la tâche
-          const taskAccessBtn = document.getElementById('taskAccessBtn');
-          taskAccessBtn.href = taskData.url;
-          
-          // Configurer le bouton "Envoyer preuve"
-          const taskSendProofBtn = document.getElementById('taskSendProofBtn');
-          taskSendProofBtn.onclick = () => {
-            openProofModal(taskId, whatsapp);
-            bootstrap.Modal.getInstance(document.getElementById('taskDetailsModal')).hide();
-          };
-          
-          // Ouvrir la modal
-          new bootstrap.Modal(document.getElementById('taskDetailsModal')).show();
-        } else {
-          showNotification("Tâche introuvable", "danger");
-        }
-      } catch (error) {
-        showNotification("Erreur lors du chargement de la tâche: " + error.message, "danger");
-      }
-    };
-
-    document.getElementById("submitProofForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const taskId = document.getElementById("taskIdHidden").value;
-      const name = document.getElementById("userName").value;
-      const proof = document.getElementById("userProof").value;
-      
-      if (!taskId || !name || !proof) {
-        showNotification("Ampidiro ny angona rehetra", "warning");
-        return;
-      }
-      
-      try {
-        // Vérifier si l'utilisateur a déjà soumis une preuve pour cette tâche
-        const submissionKey = `${userId}_${taskId}`;
-        const submissionRef = doc(db, "submissions", submissionKey);
-        const submissionSnap = await getDoc(submissionRef);
-        
-        if (submissionSnap.exists()) {
-          showNotification("Vous avez déjà soumis une preuve pour cette tâche.", "warning");
-          return;
-        }
-        
-        await setDoc(submissionRef, {
-          userId, userName, taskId, name, proof,
-          status: "en attente", createdAt: serverTimestamp()
-        });
-        
-        showNotification("Porofo nalefa! Ny mpitantana dia handinika azy.", "success");
-        
-        // Recharger les tâches pour afficher la notification
-        loadTasks();
-        
-        // Reset form and close modal
-        e.target.reset();
-        bootstrap.Modal.getInstance(document.getElementById('proofModal')).hide();
-      } catch (error) {
-        showNotification("Erreur lors de l'envoi de la preuve: " + error.message, "danger");
-      }
-    });
-
-    window.openProofModal = async (id, whatsapp) => {
-      document.getElementById('taskIdHidden').value = id;
-      
-      // Mettre à jour le lien WhatsApp
-      const whatsappBtn = document.getElementById('whatsappProofBtn');
-      const defaultMessage = "Nanatanteraka ny asa tamin'ny Microtâche Mila Vola aho. Izao ny porofoko:";
-      
-      if (whatsapp) {
-        whatsappBtn.href = `https://wa.me/${whatsapp}?text=${encodeURIComponent(defaultMessage)}`;
-      } else {
-        whatsappBtn.href = "https://wa.me/261384557584";
-      }
-      
-      // Ouvrir la modal
-      new bootstrap.Modal(document.getElementById('proofModal')).show();
-    };
-
-    // --- Gestion WhatsApp ---
-    saveWhatsAppBtn.addEventListener('click', async () => {
-      const whatsapp = document.getElementById('pubWhatsApp').value.trim();
-      
-      if (!whatsapp || whatsapp.length < 10) {
-        showNotification("Ampidiro ny laharana WhatsApp araka ny tokony ho izy", "warning");
-        return;
-      }
-      
-      try {
-        const userRef = doc(db, "users", userId);
-        await updateDoc(userRef, {
-          whatsapp: whatsapp
-        });
-        
-        userWhatsApp = whatsapp;
-        showNotification("Laharana WhatsApp voarakitra!", "success");
-      } catch (error) {
-        showNotification("Erreur lors de l'enregistrement: " + error.message, "danger");
-      }
-    });
-
-    // --- Section Publication ---
-    async function loadPublications() {
-      try {
-        const list = document.getElementById('publicationList');
-        list.innerHTML = '';
-        
-        const q = query(collection(db,'tasks'), where('publisher','==',userId));
-        const snap = await getDocs(q);
-        
-        if (snap.empty) {
-          list.innerHTML = `
-            <div class="col-12">
-              <div class="empty-state">
-                <i class="fas fa-bullhorn"></i>
-                <p>Vous n'avez publié aucune tâche</p>
-              </div>
-            </div>
-          `;
-          return;
-        }
-        
-        list.innerHTML = '';
-        snap.forEach(docSnap => {
-          const d = docSnap.data();
-          const taskId = docSnap.id;
-          const el = document.createElement('div');
-          el.className = 'col-md-6 mb-3';
-          
-          let icon = '';
-          let typeText = '';
-          let statusBadge = '';
-          
-          if (d.status === 'active') {
-            statusBadge = '<span class="badge bg-success">Active</span>';
-          } else {
-            statusBadge = '<span class="badge bg-secondary">Inactive</span>';
-          }
-          
-          // Récupérer le budget (compatibilité avec ancienne version)
-          const budget = d.budgetPerParticipant || d.budget || 0;
-          const completedCount = d.completedCount || 0;
-          
-          if (d.taskType === 'social') {
-            switch(d.socialMedia) {
-              case 'facebook': 
-                icon = '<i class="fab fa-facebook social-icon facebook"></i>';
-                typeText = 'Réseau social: Facebook';
-                break;
-              case 'twitter': 
-                icon = '<i class="fab fa-twitter social-icon twitter"></i>';
-                typeText = 'Réseau social: Twitter';
-                break;
-              case 'instagram': 
-                icon = '<i class="fab fa-instagram social-icon instagram"></i>';
-                typeText = 'Réseau social: Instagram';
-                break;
-              case 'telegram': 
-                icon = '<i class="fab fa-telegram social-icon telegram"></i>';
-                typeText = 'Réseau social: Télégramme';
-                break;
-              case 'youtube': 
-                icon = '<i class="fab fa-youtube social-icon youtube"></i>';
-                typeText = 'Réseau social: YouTube';
-                break;
-              case 'tiktok': 
-                icon = '<i class="fab fa-tiktok social-icon tiktok"></i>';
-                typeText = 'Réseau social: TikTok';
-                break;
-              case 'linkedin': 
-                icon = '<i class="fab fa-linkedin social-icon linkedin"></i>';
-                typeText = 'Réseau social: LinkedIn';
-                break;
-            }
-          } else if (d.taskType === 'website') {
-            icon = '<i class="fas fa-globe social-icon website"></i>';
-            typeText = 'Inscription site web';
-          }
-          
-          el.innerHTML = `
-            <div class="card task-card">
-              <div class="card-body">
-                <h6>${icon} ${d.description}</h6>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="badge bg-warning">${budget} Ar/part</span>
-                  ${statusBadge}
-                </div>
-                <div class="mt-2 small">${typeText}</div>
-                <div class="mt-2 small">WhatsApp: ${d.whatsapp || 'Non configuré'}</div>
-                <div class="publication-stats">
-                  <div class="stat-item-pub">
-                    <div class="stat-number-pub">${completedCount}</div>
-                    <div class="stat-label-pub">Participants</div>
-                  </div>
-                  <div class="stat-item-pub">
-                    <div class="stat-number-pub">${completedCount * budget} Ar</div>
-                    <div class="stat-label-pub">Dépensé</div>
-                  </div>
-                </div>
-                <div class="admin-task-id" onclick="copyToClipboard('${taskId}')">ID: ${taskId.substring(0,8)}...</div>
-                <div class="mt-2">
-                  <a href="${d.url}" target="_blank" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-external-link-alt me-1"></i> Voir la tâche
-                  </a>
-                  ${d.status === 'inactive' ? 
-                    `<button class="btn btn-reactivate btn-sm mt-2" onclick="reactivateTask('${taskId}')">
-                      <i class="fas fa-sync-alt me-1"></i> Réactiver
-                    </button>` 
-                    : ''
-                  }
-                </div>
-              </div>
-            </div>
-          `;
-          list.appendChild(el);
-        });
-        
-        // Préremplir le champ WhatsApp
-        if (userWhatsApp) {
-          document.getElementById('pubWhatsApp').value = userWhatsApp;
-        }
-      } catch (error) {
-        console.error("Error loading publications:", error);
-      }
-    }
-
-    document.getElementById('publishForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const desc = document.getElementById('pubDescription').value;
-      const budgetPerParticipant = parseInt(document.getElementById('pubBudgetPerParticipant').value);
-      const url = document.getElementById('pubURL').value;
-      const cond = document.getElementById('pubConditions').value;
-      const taskType = document.getElementById('taskType').value;
-      const socialMedia = document.getElementById('socialMedia').value;
-      
-      if (budgetPerParticipant < 5) {
-        showNotification('Budget ≥ 5 Ar par participant', 'warning');
-        return;
-      }
-      
-      if (!taskType) {
-        showNotification('Sélectionnez un type de tâche', 'warning');
-        return;
-      }
-      
-      if (taskType === 'social' && !socialMedia) {
-        showNotification('Sélectionnez un réseau social', 'warning');
-        return;
-      }
-      
-      try {
-        // Vérifier le solde de dépôt
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        
-        if (userData.depot < budgetPerParticipant) {
-          showNotification('Solde de dépôt insuffisant pour réactiver cette tâche', 'warning');
-          return;
-        }
-        
-        // Créer la tâche sans déduire le solde
-        await addDoc(collection(db,'tasks'),{
-          publisher: userId,
-          publisherName: userName,
-          description: desc,
-          budgetPerParticipant: budgetPerParticipant,
-          url,
-          cond,
-          taskType,
-          socialMedia: taskType === 'social' ? socialMedia : '',
-          status: 'active',
-          whatsapp: userWhatsApp,
-          createdAt: serverTimestamp(),
-          completedCount: 0
-        });
-        
-        showNotification('Asa navoaka! Le solde ne sera déduit que lorsque les participants enverront des preuves.', 'success');
-        loadPublications();
-        
-        // Reset form
-        e.target.reset();
-        socialMediaContainer.style.display = 'none';
-      } catch (error) {
-        showNotification("Erreur lors de la publication: " + error.message, 'danger');
-      }
-    });
-
-    // --- Section Admin ---
+    // --- Section Admin - CORRECTION PRINCIPALE ---
     async function loadAdminPanel() {
-      await loadRequests('depot_requests','depotList','depot');
-      await loadRequests('retrait_requests','retraitList','retrait');
-      await loadRequests('submissions','submissionList','proof');
+      try {
+        await loadRequests('depot_requests','depotList','depot');
+        await loadRequests('retrait_requests','retraitList','retrait');
+        await loadRequests('submissions','submissionList','proof');
+      } catch (error) {
+        console.error("Erreur lors du chargement du panel admin:", error);
+        showNotification("Erreur lors du chargement du panel admin", "danger");
+      }
     }
     
     async function loadRequests(col, container, type) {
       try {
         const c = document.getElementById(container);
-        c.innerHTML = '';
+        c.innerHTML = '<tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></td></tr>';
         
         const q = query(collection(db, col), where('status','==','en attente'));
         const snap = await getDocs(q);
@@ -2950,7 +1695,7 @@
         if (snap.empty) {
           c.innerHTML = `
             <tr>
-              <td colspan="${type === 'retrait' ? 5 : type === 'depot' ? 5 : 4}" class="text-center py-4">
+              <td colspan="5" class="text-center py-4">
                 <div class="empty-state py-0">
                   <i class="fas fa-inbox"></i>
                   <p>Aucune demande en attente</p>
@@ -2961,6 +1706,7 @@
           return;
         }
         
+        c.innerHTML = '';
         snap.forEach(docSnap => {
           const d = docSnap.data();
           const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString() : 'Date inconnue';
@@ -3016,6 +1762,14 @@
         });
       } catch (error) {
         console.error(`Error loading ${col}:`, error);
+        const c = document.getElementById(container);
+        c.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-4 text-danger">
+              Erreur lors du chargement: ${error.message}
+            </td>
+          </tr>
+        `;
       }
     }
 
@@ -3044,113 +1798,6 @@
       }
     };
 
-    // --- Section Historique ---
-    async function loadHistory() {
-      try {
-        // Charger l'historique des dépôts
-        const depositQuery = query(collection(db, "depot_requests"), where("userId", "==", userId));
-        const depositSnap = await getDocs(depositQuery);
-        const depositList = document.getElementById('depositHistory');
-        depositList.innerHTML = '';
-        
-        if (depositSnap.empty) {
-          depositList.innerHTML = `
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                <div class="empty-state py-0">
-                  <i class="fas fa-inbox"></i>
-                  <p>Aucun historique de dépôt</p>
-                  </div>
-              </td>
-            </tr>
-          `;
-        } else {
-          depositSnap.forEach(doc => {
-            const d = doc.data();
-            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${date}</td>
-              <td>${d.montant} Ar</td>
-              <td>${d.method}</td>
-              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
-            `;
-            depositList.appendChild(row);
-          });
-        }
-        
-        // Charger l'historique des retraits
-        const withdrawQuery = query(collection(db, "retrait_requests"), where("userId", "==", userId));
-        const withdrawSnap = await getDocs(withdrawQuery);
-        const withdrawList = document.getElementById('withdrawHistory');
-        withdrawList.innerHTML = '';
-        
-        if (withdrawSnap.empty) {
-          withdrawList.innerHTML = `
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                <div class="empty-state py-0">
-                  <i class="fas fa-inbox"></i>
-                  <p>Aucun historique de retrait</p>
-                </div>
-              </td>
-            </tr>
-          `;
-        } else {
-          withdrawSnap.forEach(doc => {
-            const d = doc.data();
-            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${date}</td>
-              <td>${d.montant} Ar</td>
-              <td>${d.frais || 0} Ar</td>
-              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
-            `;
-            withdrawList.appendChild(row);
-          });
-        }
-        
-        // Charger l'historique des preuves
-        const proofQuery = query(collection(db, "submissions"), where("userId", "==", userId));
-        const proofSnap = await getDocs(proofQuery);
-        const proofList = document.getElementById('proofHistory');
-        proofList.innerHTML = '';
-        
-        if (proofSnap.empty) {
-          proofList.innerHTML = `
-            <tr>
-              <td colspan="4" class="text-center py-4">
-                <div class="empty-state py-0">
-                  <i class="fas fa-inbox"></i>
-                  <p>Aucun historique de preuve</p>
-                </div>
-              </td>
-            </tr>
-          `;
-        } else {
-          proofSnap.forEach(doc => {
-            const d = doc.data();
-            const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${date}</td>
-              <td>${d.taskId.substring(0, 8)}...</td>
-              <td><span class="history-badge badge-${d.status === 'confirmé' ? 'confirmed' : d.status === 'en attente' ? 'pending' : 'canceled'}">${d.status}</span></td>
-              <td>${d.status === 'confirmé' ? '50 Ar' : '-'}</td>
-            `;
-            proofList.appendChild(row);
-          });
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement de l'historique:", error);
-        showNotification("Erreur lors du chargement de l'historique", "danger");
-      }
-    }
-
-    // Ajout de la fonction à l'objet window pour la rendre accessible globalement
-    window.loadHistory = loadHistory;
-
     window.openConfirmationModal = (submissionId, submissionData) => {
       document.getElementById('confirmationTaskId').textContent = submissionData.taskId || 'Inconnu';
       document.getElementById('confirmationName').value = submissionData.name || 'Non spécifié';
@@ -3177,7 +1824,7 @@
         
         const uRef = doc(db, 'users', d.userId);
         const uSnap = await getDoc(uRef);
-        const u = uSnap.exists() ? uSnap.data() : {gain: 0, depot: 0, bonus: 0};
+        const u = uSnap.exists() ? uSnap.data() : {gain: 0, depot: 0};
         
         if (type === 'depot') {
           await updateDoc(uRef, {depot: u.depot + d.montant});
@@ -3222,19 +1869,6 @@
             depot: publisherData.depot - taskBudget
           });
           
-          // Si l'utilisateur a un parrain, créditer le parrain avec 5% du gain
-          if (u.referrer) {
-            const referrerRef = doc(db, 'users', u.referrer);
-            const referrerSnap = await getDoc(referrerRef);
-            if (referrerSnap.exists()) {
-              const referrerData = referrerSnap.data();
-              const bonusAmount = taskBudget * 0.05;
-              await updateDoc(referrerRef, {
-                bonus: (referrerData.bonus || 0) + bonusAmount
-              });
-            }
-          }
-          
           // Vérifier si le solde est épuisé et désactiver la tâche si nécessaire
           const updatedPublisherSnap = await getDoc(publisherRef);
           const updatedPublisherData = updatedPublisherSnap.data();
@@ -3250,8 +1884,6 @@
         }
         
         loadAdminPanel();
-        loadBalances();
-        loadPublications();
       } catch (error) {
         showNotification("Erreur lors de la confirmation: " + error.message, 'danger');
       }
@@ -3266,89 +1898,6 @@
         showNotification("Erreur lors de l'annulation: " + error.message, 'danger');
       }
     };
-
-    // Fonction pour réactiver une tâche
-    window.reactivateTask = async (taskId) => {
-      try {
-        const taskRef = doc(db, "tasks", taskId);
-        const taskSnap = await getDoc(taskRef);
-        if (!taskSnap.exists()) {
-          showNotification("Tâche introuvable", "danger");
-          return;
-        }
-        
-        const taskData = taskSnap.data();
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        
-        // Compatibilité avec ancienne version
-        const taskBudget = taskData.budgetPerParticipant || taskData.budget || 0;
-        
-        if (userData.depot < taskBudget) {
-          showNotification("Solde de dépôt insuffisant pour réactiver cette tâche", "warning");
-          return;
-        }
-        
-        await updateDoc(taskRef, {
-          status: "active"
-        });
-        
-        showNotification("Tâche réactivée avec succès!", "success");
-        loadPublications();
-      } catch (error) {
-        showNotification("Erreur lors de la réactivation: " + error.message, "danger");
-      }
-    };
-
-    // Setup real-time listeners for balances
-    function setupRealtimeListeners() {
-      const userRef = doc(db, "users", userId);
-      
-      onSnapshot(userRef, (doc) => {
-        if (doc.exists()) {
-          const data = doc.data();
-          document.getElementById("gainBalance").textContent = data.gain + " Ar";
-          document.getElementById("depositBalance").textContent = data.depot + " Ar";
-          document.getElementById("bonusBalance").textContent = data.bonus + " Ar";
-          document.getElementById("referralsCount").textContent = data.referrals ? data.referrals.length : 0;
-          document.getElementById("totalReferralBonus").textContent = data.bonus + " Ar";
-        }
-      });
-    }
-
-    // Fonctions utilitaires
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      showNotification('ID copié dans le presse-papiers!', 'success');
-    }
-    
-    function copyReferralLink() {
-      const link = document.getElementById('referralLink');
-      link.select();
-      document.execCommand('copy');
-      showNotification('Lien copié dans le presse-papiers!', 'success');
-    }
-    
-    function copyPayeerAccount() {
-      const payeerAccount = document.getElementById('payeerAccount');
-      payeerAccount.select();
-      document.execCommand('copy');
-      showNotification('Compte PAYEER copié dans le presse-papiers!', 'success');
-    }
-
-    function shareReferral() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Microtâche Mila Vola',
-          text: 'Rejoignez la plateforme Microtâche Mila Vola et gagnez de l\'argent en réalisant des microtâches!',
-          url: document.getElementById('referralLink').value
-        })
-        .catch(error => console.log('Erreur de partage:', error));
-      } else {
-        copyReferralLink();
-      }
-    }
 
     // Fonction d'affichage de notification
     function showNotification(message, type) {
