@@ -36,6 +36,7 @@
       --whatsapp: #25D366;
       --whatsapp-dark: #128C7E;
       --reactivate: #FF6B00;
+      --google: #4285F4;
     }
     
     * {
@@ -270,6 +271,16 @@
     
     .btn-reactivate:hover {
       background: #e05a00;
+      color: white;
+    }
+    
+    .btn-google {
+      background: var(--google);
+      color: white;
+    }
+    
+    .btn-google:hover {
+      background: #3367d6;
       color: white;
     }
     
@@ -1067,6 +1078,112 @@
       font-weight: 600;
     }
     
+    /* Nouveaux styles pour l'inscription */
+    .auth-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--gray-300);
+      margin-bottom: 1.5rem;
+    }
+    
+    .auth-tab {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      border-bottom: 3px solid transparent;
+    }
+    
+    .auth-tab.active {
+      border-bottom: 3px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .google-btn {
+      background: var(--google);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    
+    .google-btn:hover {
+      background: #3367d6;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+    
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid var(--gray-300);
+    }
+    
+    .divider span {
+      padding: 0 1rem;
+      color: var(--gray-600);
+    }
+    
+    /* Section équipe de parrainage */
+    .team-stats {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .team-stat-card {
+      flex: 1;
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .team-stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .team-stat-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    
+    .send-bonus-btn {
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .send-bonus-btn:hover {
+      background: var(--success-dark);
+    }
+    
     @media (max-width: 768px) {
       .section-card {
         padding: 1.5rem;
@@ -1108,6 +1225,10 @@
         flex-direction: column;
         gap: 0.5rem;
       }
+      
+      .team-stats {
+        flex-direction: column;
+      }
     }
     
     /* Animations */
@@ -1146,26 +1267,77 @@
         <p>Plateforme pour gagner de l'argent en réalisant des microtâches</p>
       </div>
       
-      <form id="loginForm">
-        <div class="mb-3">
-          <label for="firstName" class="form-label">Anarana voalohany</label>
-          <input type="text" class="form-control" id="firstName" required>
+      <div class="auth-container">
+        <!-- Onglets -->
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="loginTab">Connexion</div>
+          <div class="auth-tab" id="signupTab">Inscription</div>
         </div>
         
-        <div class="mb-3">
-          <label for="securityCode" class="form-label">Teny miafina</label>
-          <input type="password" class="form-control" id="securityCode" required>
-          <div class="form-text"></div>
+        <!-- Formulaire de connexion -->
+        <div id="loginFormContainer">
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="firstName" class="form-label">Anarana voalohany</label>
+              <input type="text" class="form-control" id="firstName" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="securityCode" class="form-label">Teny miafina</label>
+              <input type="password" class="form-control" id="securityCode" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" style="background: var(--primary); border: none; padding: 0.85rem; font-weight: 600; border-radius: 10px;">
+              <i class="fas fa-sign-in-alt me-1"></i> Hiditra
+            </button>
+          </form>
+          
+          <div class="divider">
+            <span>Na</span>
+          </div>
+          
+          <button class="google-btn" id="googleLoginBtn">
+            <i class="fab fa-google"></i> Hiditra amin'ny Google
+          </button>
         </div>
         
-        <button type="submit" class="btn btn-primary w-100" style="background: var(--primary); border: none; padding: 0.85rem; font-weight: 600; border-radius: 10px;">
-          <i class="fas fa-sign-in-alt me-1"></i> Hiditra
-        </button>
-        
-        <div class="mt-3 text-center">
-          <p>Tsy manana kaonty? <a href="#" id="signupLink">Hisoratra anarana</a></p>
+        <!-- Formulaire d'inscription -->
+        <div id="signupFormContainer" style="display:none;">
+          <form id="signupForm">
+            <div class="mb-3">
+              <label for="signupFirstName" class="form-label">Anarana voalohany</label>
+              <input type="text" class="form-control" id="signupFirstName" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="signupSecurityCode" class="form-label">Teny miafina</label>
+              <input type="password" class="form-control" id="signupSecurityCode" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="signupEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="signupEmail" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="referralCodeInput" class="form-label">Code de parrain (facultatif)</label>
+              <input type="text" class="form-control" id="referralCodeInput">
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" style="background: var(--primary); border: none; padding: 0.85rem; font-weight: 600; border-radius: 10px;">
+              <i class="fas fa-user-plus me-1"></i> Hisoratra anarana
+            </button>
+          </form>
+          
+          <div class="divider">
+            <span>Na</span>
+          </div>
+          
+          <button class="google-btn" id="googleSignupBtn">
+            <i class="fab fa-google"></i> Hisoratra anarana amin'ny Google
+          </button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -1361,6 +1533,15 @@
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>Complétez des tâches pour gagner de l'argent. Chaque tâche validée rapporte 50 Ar.
         </div>
+        
+        <!-- Barre de recherche -->
+        <div class="admin-search-container mb-3">
+          <input type="text" id="taskSearch" class="form-control" placeholder="Rechercher par ID de tâche...">
+          <button class="btn btn-primary" onclick="filterTasks()">
+            <i class="fas fa-search me-1"></i> Hitady
+          </button>
+        </div>
+        
         <div class="table-responsive">
           <table class="tasks-table">
             <thead>
@@ -1476,7 +1657,7 @@
         <h4 class="section-title"><i class="fas fa-sliders-h me-2"></i>Paramètres</h4>
         <div class="section-card">
           <h5><i class="fas fa-user-friends me-2"></i>Programme de Parrainage</h5>
-          <p>Invitez vos amis et gagnez 10% de leurs gains!</p>
+          <p>Invitez vos amis et gagnez 5% de leurs gains!</p>
           <div class="mt-3">
             <p class="mb-1">Votre code de parrainage:</p>
             <div class="referral-code" id="referralCode">Chargement...</div>
@@ -1490,9 +1671,59 @@
           </div>
           
           <div class="mt-3">
-            <button class="btn btn-primary" onclick="shareReferral()" style="background: var(--primary); border: none; padding: 0.75rem 1.5rem; font-weight: 600; border-radius: 10px;">
+            <button class="btn btn-primary" onclick="shareReferral()">
               <i class="fas fa-share-alt me-1"></i> Partager
             </button>
+          </div>
+          
+          <!-- Statistiques de l'équipe -->
+          <div class="team-stats mt-4">
+            <div class="team-stat-card">
+              <div class="team-stat-number" id="teamCount">0</div>
+              <div class="team-stat-label">Membre dans l'équipe</div>
+            </div>
+            <div class="team-stat-card">
+              <div class="team-stat-number" id="teamBonus">0 Ar</div>
+              <div class="team-stat-label">Bonus accumulé</div>
+            </div>
+            <div class="team-stat-card">
+              <div class="team-stat-number" id="availableBonus">0 Ar</div>
+              <div class="team-stat-label">Bonus disponible</div>
+            </div>
+          </div>
+          
+          <!-- Bouton pour envoyer les bonus -->
+          <div class="d-flex justify-content-end mt-3">
+            <button class="send-bonus-btn" onclick="transferParrainBonus()">
+              <i class="fas fa-paper-plane me-1"></i> Alefa ny bonus
+            </button>
+          </div>
+          
+          <!-- Tableau des filleuls -->
+          <div class="mt-4">
+            <h5><i class="fas fa-users me-2"></i>Votre équipe</h5>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Date d'inscription</th>
+                    <th>Gains totaux</th>
+                    <th>Votre bonus (5%)</th>
+                  </tr>
+                </thead>
+                <tbody id="teamList">
+                  <tr>
+                    <td colspan="4" class="text-center py-4">
+                      <div class="empty-state py-0">
+                        <i class="fas fa-users"></i>
+                        <p>Tsy misy mpikambana ao amin'ny ekipanao</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -1796,6 +2027,9 @@
       serverTimestamp, query, where, getDocs, setDoc,
       updateDoc, deleteDoc, onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+    import { 
+      getAuth, GoogleAuthProvider, signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
     // Firebase configuration
     const firebaseConfig = {
@@ -1811,88 +2045,102 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     // Update Firebase status
     const firebaseStatus = document.getElementById('firebaseStatus');
-    firebaseStatus.innerHTML = '<i class="fas fa-circle-check"></i> Firebase Connected';
+    firebaseStatus.innerHTML = '<i class="fas fa-circle-check"></i> Mila vola';
 
     // Variables globales
     let userId = "";
     let isAdmin = false;
     let userName = "";
+    let userEmail = "";
     let userWhatsApp = "";
+    let parrainId = null;
 
-    // Page elements
-    const loginPage = document.getElementById('loginPage');
-    const appContainer = document.getElementById('appContainer');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const welcomeMessage = document.getElementById('welcomeMessage');
-    const taskTypeSelect = document.getElementById('taskType');
-    const socialMediaContainer = document.getElementById('socialMediaContainer');
-    const saveWhatsAppBtn = document.getElementById('saveWhatsAppBtn');
-    const depositMethodSelect = document.getElementById('depositMethod');
-    const payeerContainer = document.getElementById('payeerContainer');
-
-    // Gestion du type de tâche
-    taskTypeSelect.addEventListener('change', function() {
-      if (this.value === 'social') {
-        socialMediaContainer.style.display = 'block';
-      } else {
-        socialMediaContainer.style.display = 'none';
-      }
+    // Gestion des onglets de connexion/inscription
+    document.getElementById('loginTab').addEventListener('click', () => {
+      document.getElementById('loginFormContainer').style.display = 'block';
+      document.getElementById('signupFormContainer').style.display = 'none';
+      document.getElementById('loginTab').classList.add('active');
+      document.getElementById('signupTab').classList.remove('active');
+    });
+    
+    document.getElementById('signupTab').addEventListener('click', () => {
+      document.getElementById('loginFormContainer').style.display = 'none';
+      document.getElementById('signupFormContainer').style.display = 'block';
+      document.getElementById('signupTab').classList.add('active');
+      document.getElementById('loginTab').classList.remove('active');
     });
 
-    // Gestion de la méthode de dépôt
-    depositMethodSelect.addEventListener('change', function() {
-      if (this.value === 'PAYEER') {
-        payeerContainer.style.display = 'block';
-      } else {
-        payeerContainer.style.display = 'none';
-      }
-    });
+    // Connexion avec Google
+    document.getElementById('googleLoginBtn').addEventListener('click', googleAuth);
+    document.getElementById('googleSignupBtn').addEventListener('click', googleAuth);
 
-    // Fonction pour afficher une section
-    window.showSection = (sectionId) => {
-      // Masquer toutes les sections
-      document.getElementById('adminSection').style.display = 'none';
-      document.getElementById('accountSection').style.display = 'none';
-      document.getElementById('tasksSection').style.display = 'none';
-      document.getElementById('publicationSection').style.display = 'none';
-      document.getElementById('settingsSection').style.display = 'none';
-      document.getElementById('historySection').style.display = 'none';
-      
-      // Afficher la section demandée
-      document.getElementById(sectionId).style.display = 'block';
-      
-      // Charger les données si nécessaire
-      if (sectionId === 'adminSection' && isAdmin) {
-        loadAdminPanel();
-      } else if (sectionId === 'tasksSection') {
-        loadTasks();
-      } else if (sectionId === 'publicationSection' && isAdmin) {
-        loadPublications();
-      }
-    };
-
-    // Vérifier si l'utilisateur est déjà connecté
-    function checkLoginStatus() {
-      const savedUser = localStorage.getItem('milaVolaUser');
-      if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        userId = userData.id;
+    async function googleAuth() {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Créer un ID utilisateur basé sur l'UID de Google
+        const userID = user.uid;
+        
+        // Vérifier si l'utilisateur existe déjà
+        const userRef = doc(db, "users", userID);
+        const userSnap = await getDoc(userRef);
+        
+        if (!userSnap.exists()) {
+          // Créer un nouvel utilisateur
+          await setDoc(userRef, {
+            name: user.displayName || "Utilisateur Google",
+            email: user.email,
+            securityCode: "google-auth",
+            gain: 0,
+            depot: 0,
+            createdAt: serverTimestamp(),
+            isAdmin: false,
+            completedTasks: [],
+            whatsapp: "",
+            parrainId: parrainId,
+            parrainBonus: 0
+          });
+        }
+        
+        // Récupérer les informations de l'utilisateur
+        const userDoc = await getDoc(userRef);
+        const userData = userDoc.data();
+        
+        // Stocker les informations de l'utilisateur
+        userId = userID;
         userName = userData.name;
-        isAdmin = userData.isAdmin;
+        userEmail = userData.email || "";
+        isAdmin = userData.isAdmin || false;
         userWhatsApp = userData.whatsapp || "";
+        
+        // Sauvegarder dans localStorage
+        localStorage.setItem('milaVolaUser', JSON.stringify({
+          id: userId,
+          name: userName,
+          email: userEmail,
+          isAdmin: isAdmin,
+          whatsapp: userWhatsApp
+        }));
+        
+        // Mettre à jour le message de bienvenue
+        welcomeMessage.textContent = `Bienvenue, ${userName} !`;
         
         // Masquer la page de connexion et afficher l'application
         loginPage.style.display = 'none';
         appContainer.style.display = 'block';
         
-        // Mettre à jour le message de bienvenue
-        welcomeMessage.textContent = `Bienvenue, ${userName} !`;
-        
         // Charger l'application
         loadApplication();
+        
+      } catch (error) {
+        console.error("Erreur d'authentification Google:", error);
+        showNotification("Erreur d'authentification Google: " + error.message, "danger");
       }
     }
 
@@ -1907,9 +2155,6 @@
         alert('Ampidiro ny anarana sy ny teny miafina');
         return;
       }
-      
-      // Vérifier si le code d'accès est celui de l'admin
-      const adminAccess = securityCode === "Rakoto12";
       
       // Créer un ID utilisateur basé sur le nom
       const userID = firstName.toLowerCase().replace(/\s+/g, '-') + '-' + Math.floor(1000 + Math.random() * 9000);
@@ -1934,9 +2179,11 @@
             gain: 0,
             depot: 0,
             createdAt: serverTimestamp(),
-            isAdmin: adminAccess,
+            isAdmin: false,
             completedTasks: [],
-            whatsapp: ""
+            whatsapp: "",
+            parrainId: parrainId,
+            parrainBonus: 0
           });
         }
         
@@ -1947,7 +2194,7 @@
         // Stocker les informations de l'utilisateur
         userId = userID;
         userName = userData.name;
-        isAdmin = userData.isAdmin || adminAccess;
+        isAdmin = userData.isAdmin || false;
         userWhatsApp = userData.whatsapp || "";
         
         // Sauvegarder dans localStorage
@@ -1974,6 +2221,87 @@
       }
     });
 
+    // Gestion du formulaire d'inscription
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const firstName = document.getElementById("signupFirstName").value.trim();
+      const securityCode = document.getElementById("signupSecurityCode").value;
+      const email = document.getElementById("signupEmail").value.trim();
+      const referralCode = document.getElementById("referralCodeInput").value.trim();
+      
+      if (!firstName || !securityCode || !email) {
+        showNotification("Ampidiro ny angona rehetra", "warning");
+        return;
+      }
+      
+      // Créer un ID utilisateur basé sur le nom
+      const userID = firstName.toLowerCase().replace(/\s+/g, '-') + '-' + Math.floor(1000 + Math.random() * 9000);
+      
+      try {
+        // Vérifier si l'utilisateur existe déjà
+        const userRef = doc(db, "users", userID);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+          showNotification("Efa misy ny anarana io", "warning");
+          return;
+        }
+        
+        // Vérifier le code de parrain
+        let parrainId = null;
+        if (referralCode) {
+          const parrainRef = doc(db, "users", referralCode);
+          const parrainSnap = await getDoc(parrainRef);
+          if (parrainSnap.exists()) {
+            parrainId = referralCode;
+          } else {
+            showNotification("Tsy mety ny code referal", "warning");
+          }
+        }
+        
+        // Créer un nouvel utilisateur
+        await setDoc(userRef, {
+          name: firstName,
+          email: email,
+          securityCode: securityCode,
+          gain: 0,
+          depot: 0,
+          createdAt: serverTimestamp(),
+          isAdmin: false,
+          completedTasks: [],
+          whatsapp: "",
+          parrainId: parrainId,
+          parrainBonus: 0
+        });
+        
+        // Connecter automatiquement l'utilisateur
+        const userData = (await getDoc(userRef)).data();
+        userId = userID;
+        userName = userData.name;
+        userEmail = userData.email;
+        isAdmin = userData.isAdmin;
+        userWhatsApp = userData.whatsapp || "";
+        
+        localStorage.setItem('milaVolaUser', JSON.stringify({
+          id: userId,
+          name: userName,
+          email: userEmail,
+          isAdmin: isAdmin,
+          whatsapp: userWhatsApp
+        }));
+        
+        welcomeMessage.textContent = `Bienvenue, ${userName} !`;
+        loginPage.style.display = 'none';
+        appContainer.style.display = 'block';
+        loadApplication();
+        
+      } catch (error) {
+        console.error("Erreur lors de l'inscription:", error);
+        showNotification("Erreur lors de l'inscription: " + error.message, "danger");
+      }
+    });
+
     // Déconnexion
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('milaVolaUser');
@@ -1987,6 +2315,9 @@
       await loadPublications();
       document.getElementById("referralCode").textContent = userId;
       document.getElementById('referralLink').value = window.location.href.split('?')[0] + '?ref=' + userId;
+      
+      // Charger les données de parrainage
+      await loadParrainageData();
       
       // Gestion des sections admin/publication
       if (isAdmin) {
@@ -2164,6 +2495,7 @@
           
           const el = document.createElement('tr');
           el.className = isCompleted ? 'completed-task' : '';
+          el.setAttribute('data-task-id', taskId);
           
           el.innerHTML = `
             <td>${d.description}</td>
@@ -2183,6 +2515,20 @@
         console.error("Error loading tasks:", error);
       }
     }
+
+    window.filterTasks = () => {
+      const searchTerm = document.getElementById('taskSearch').value.toLowerCase();
+      const rows = document.querySelectorAll('#taskList tr');
+      
+      rows.forEach(row => {
+        const taskId = row.getAttribute('data-task-id') || '';
+        if (taskId.toLowerCase().includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    };
 
     window.showTaskDetails = async (taskId, whatsapp) => {
       try {
@@ -2819,6 +3165,11 @@
             showNotification('Le solde de dépôt est épuisé pour cette tâche. Tâche désactivée.', 'info');
           }
           
+          // Ajouter le bonus de parrainage
+          if (u.parrainId) {
+            await addParrainBonus(d.userId, taskBudget);
+          }
+          
           showNotification(`Tâche confirmée! ${taskBudget} Ar crédités.`, 'success');
         }
         
@@ -2938,19 +3289,162 @@
       }, 3000);
     }
 
+    // Charger les données de parrainage
+    async function loadParrainageData() {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        
+        // Mettre à jour le bonus disponible
+        document.getElementById("availableBonus").textContent = (userData.parrainBonus || 0) + " Ar";
+        
+        // Charger la liste des filleuls
+        const teamList = document.getElementById("teamList");
+        teamList.innerHTML = '';
+        
+        const q = query(collection(db, "users"), where("parrainId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          teamList.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-users"></i>
+                  <p>Tsy misy mpikambana ao amin'ny ekipanao</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          let totalBonus = 0;
+          let teamCount = 0;
+          
+          querySnapshot.forEach((doc) => {
+            const member = doc.data();
+            teamCount++;
+            
+            // Calculer les gains totaux du filleul (gain) et 5% de ces gains
+            const gainsTotaux = member.gain || 0;
+            const bonus = gainsTotaux * 0.05;
+            totalBonus += bonus;
+            
+            const dateInscription = member.createdAt ? 
+              new Date(member.createdAt.seconds * 1000).toLocaleDateString() : 'Tsy fantatra';
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${member.name}</td>
+              <td>${dateInscription}</td>
+              <td>${gainsTotaux} Ar</td>
+              <td>${bonus} Ar</td>
+            `;
+            teamList.appendChild(row);
+          });
+          
+          // Mettre à jour les statistiques
+          document.getElementById("teamCount").textContent = teamCount;
+          document.getElementById("teamBonus").textContent = totalBonus + " Ar";
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des données de parrainage:", error);
+      }
+    }
+
+    // Transférer le bonus de parrainage
+    async function transferParrainBonus() {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        
+        if (userData.parrainBonus > 0) {
+          // Ajouter le bonus au solde de gains
+          await updateDoc(userRef, {
+            gain: (userData.gain || 0) + userData.parrainBonus,
+            parrainBonus: 0
+          });
+          
+          showNotification("Voaray ny bonus!", "success");
+          
+          // Recharger les données
+          loadBalances();
+          loadParrainageData();
+        } else {
+          showNotification("Tsy misy bonus azo alefa", "info");
+        }
+      } catch (error) {
+        console.error("Erreur lors du transfert du bonus:", error);
+        showNotification("Erreur lors du transfert: " + error.message, "danger");
+      }
+    }
+
+    // Ajouter le bonus de parrainage lorsqu'un filleul complète une tâche
+    async function addParrainBonus(userId, taskBudget) {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        
+        if (userData.parrainId) {
+          const bonus = taskBudget * 0.05;
+          const parrainRef = doc(db, "users", userData.parrainId);
+          const parrainSnap = await getDoc(parrainRef);
+          const parrainData = parrainSnap.data();
+          
+          await updateDoc(parrainRef, {
+            parrainBonus: (parrainData.parrainBonus || 0) + bonus
+          });
+          
+          // Mettre à jour l'affichage en temps réel
+          if (document.getElementById('settingsSection').style.display === 'block') {
+            loadParrainageData();
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du bonus de parrainage:", error);
+      }
+    }
+
     // Vérifier le paramètre de référence dans l'URL
     function checkReferral() {
       const urlParams = new URLSearchParams(window.location.search);
       const ref = urlParams.get('ref');
       if (ref) {
-        document.getElementById('securityCode').value = ref;
+        document.getElementById('referralCodeInput').value = ref;
+        parrainId = ref;
         showNotification("Vous avez été invité par un parrain! Utilisez le code d'accès pour bénéficier des avantages.", "info");
       }
     }
 
     // Vérifier le statut de connexion au chargement
-    checkLoginStatus();
+    function checkLoginStatus() {
+      const savedUser = localStorage.getItem('milaVolaUser');
+      if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        userId = userData.id;
+        userName = userData.name;
+        isAdmin = userData.isAdmin;
+        userWhatsApp = userData.whatsapp || "";
+        
+        // Masquer la page de connexion et afficher l'application
+        loginPage.style.display = 'none';
+        appContainer.style.display = 'block';
+        
+        // Mettre à jour le message de bienvenue
+        welcomeMessage.textContent = `Bienvenue, ${userName} !`;
+        
+        // Charger l'application
+        loadApplication();
+      }
+    }
+
+    // Vérifier le paramètre de référence
     checkReferral();
+    
+    // Vérifier le statut de connexion au chargement
+    checkLoginStatus();
   </script>
 </body>
 </html>
