@@ -693,11 +693,14 @@
       background: var(--primary-dark);
     }
     
-    .card-header-gradient {
+    .modal-header {
       background: linear-gradient(to right, var(--primary), var(--secondary));
       color: white;
-      padding: 1.25rem 1.75rem;
-      border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .modal-title {
+      font-weight: 600;
     }
     
     .user-avatar {
@@ -2256,6 +2259,9 @@
           await updateDoc(referrerRef, {
             referrals: arrayUnion(userID)
           });
+          
+          // Afficher une notification de succès
+          showNotification(`Inscription réussie avec parrainage (${referralCode}) !`, "success");
         }
         
         // Connecter l'utilisateur après inscription
@@ -3232,6 +3238,9 @@
               await updateDoc(referrerRef, {
                 bonus: (referrerData.bonus || 0) + bonusAmount
               });
+              
+              // Afficher un log pour confirmer
+              console.log(`Crédité le parrain ${u.referrer} avec ${bonusAmount} Ar`);
             }
           }
           
