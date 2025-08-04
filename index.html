@@ -37,6 +37,7 @@
       --whatsapp-dark: #128C7E;
       --reactivate: #FF6B00;
       --bonus: #ff9e00;
+      --proof: #4CAF50;
     }
     
     * {
@@ -198,6 +199,11 @@
       color: white;
     }
     
+    .proof-card {
+      background: linear-gradient(135deg, var(--proof), #2E7D32);
+      color: white;
+    }
+    
     .balance-label {
       font-size: 0.9rem;
       text-transform: uppercase;
@@ -286,6 +292,16 @@
     
     .btn-transfer:hover {
       background: #e68a00;
+      color: white;
+    }
+    
+    .btn-proof {
+      background: var(--proof);
+      color: white;
+    }
+    
+    .btn-proof:hover {
+      background: #388E3C;
       color: white;
     }
     
@@ -1193,6 +1209,60 @@
       background-color: var(--gray-100);
     }
     
+    /* Styles pour la nouvelle section de preuve de retrait */
+    .proof-section {
+      margin-bottom: 2rem;
+    }
+    
+    .proof-status {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .proof-status.pending {
+      background-color: #fff8e1;
+      color: #ffa000;
+    }
+    
+    .proof-status.approved {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .proof-status.rejected {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .proof-status.none {
+      background-color: #e3f2fd;
+      color: #1565c0;
+    }
+    
+    .proof-form .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .proof-submit-btn {
+      position: relative;
+    }
+    
+    .proof-submit-btn i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .proof-submit-btn.sent i {
+      opacity: 1;
+    }
+    
     @media (max-width: 768px) {
       .section-card {
         padding: 1.5rem;
@@ -1256,9 +1326,12 @@
     
     /* Nouvelle animation pour le badge */
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
     }
     
     .pending-notification {
@@ -1441,6 +1514,8 @@
         <a class="nav-link" href="#publicationSection" onclick="showSection('publicationSection')"><i class="fas fa-bullhorn me-1"></i> Publication</a>
         <a class="nav-link" href="#settingsSection" onclick="showSection('settingsSection')"><i class="fas fa-sliders-h me-1"></i> Paramètres</a>
         <a class="nav-link" href="#historySection" onclick="showSection('historySection'); loadHistory()"><i class="fas fa-history me-1"></i> Historique</a>
+        <!-- Nouvel onglet pour la preuve de retrait -->
+        <a class="nav-link" href="#proofSection" onclick="showSection('proofSection'); loadProofStatus()"><i class="fas fa-check-circle me-1"></i> Preuve Retrait</a>
       </nav>
 
       <!-- Admin Section -->
@@ -1532,6 +1607,38 @@
                   <div class="empty-state py-0">
                     <i class="fas fa-inbox"></i>
                     <p>Aucune soumission de preuve en attente</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Nouveau tableau pour les preuves de retrait -->
+        <div class="admin-card">
+          <h5 class="admin-header"><i class="fas fa-receipt me-2"></i>Preuves de Retrait</h5>
+          <div class="admin-search-container">
+            <input type="text" id="searchWithdrawProof" class="form-control" placeholder="Rechercher par nom ou ID...">
+            <button class="btn btn-primary" onclick="filterAdminTable('withdrawProofList', 'searchWithdrawProof')">
+              <i class="fas fa-search me-1"></i> Hitady
+            </button>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Lien Publication</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="withdrawProofList">
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <div class="empty-state py-0">
+                    <i class="fas fa-inbox"></i>
+                    <p>Aucune preuve de retrait en attente</p>
                   </div>
                 </td>
               </tr>
@@ -1862,6 +1969,44 @@
         </div>
       </div>
 
+      <!-- Nouvelle section Preuve de Retrait -->
+      <div id="proofSection" class="mb-5 proof-section" style="display:none;">
+        <h4 class="section-title"><i class="fas fa-check-circle me-2"></i>Preuve de Retrait</h4>
+        
+        <div class="section-card">
+          <div class="proof-status" id="proofStatus">
+            <i class="fas fa-info-circle me-2"></i> Chargement du statut de votre preuve...
+          </div>
+          
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> Pour effectuer un retrait, vous devez soumettre une preuve de publication sur Facebook.
+          </div>
+          
+          <form id="proofForm">
+            <div class="mb-3">
+              <label class="form-label">Nom Complet (compte Mila Vola)</label>
+              <input type="text" class="form-control" id="proofName" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Lien de la Publication Facebook</label>
+              <input type="url" class="form-control" id="proofLink" placeholder="https://www.facebook.com/..." required>
+              <div class="form-text">Copiez le lien de votre publication Facebook</div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Description de la Publication</label>
+              <textarea class="form-control" id="proofDescription" rows="3" placeholder="Décrivez le contenu de votre publication..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-proof btn-action proof-submit-btn">
+              <i class="fas fa-paper-plane me-1"></i> Envoyer la Preuve
+              <i class="fas fa-clock loading-icon" style="display: none;"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
       <!-- Modals -->
       <!-- Deposit Modal -->
       <div class="modal fade" id="depositModal" tabindex="-1">
@@ -2165,6 +2310,7 @@
       document.getElementById('publicationSection').style.display = 'none';
       document.getElementById('settingsSection').style.display = 'none';
       document.getElementById('historySection').style.display = 'none';
+      document.getElementById('proofSection').style.display = 'none';
       
       // Afficher la section demandée
       document.getElementById(sectionId).style.display = 'block';
@@ -2244,7 +2390,9 @@
             completedTasks: [],
             whatsapp: "",
             referrals: [],
-            referrer: null
+            referrer: null,
+            withdrawProofApproved: false,
+            withdrawProofStatus: "none"
           });
         }
         
@@ -2265,7 +2413,9 @@
           name: userName,
           isAdmin: isAdmin,
           whatsapp: userWhatsApp,
-          referrer: userReferrer
+          referrer: userReferrer,
+          withdrawProofApproved: userData.withdrawProofApproved || false,
+          withdrawProofStatus: userData.withdrawProofStatus || "none"
         }));
         
         // Mettre à jour le message de bienvenue
@@ -2335,7 +2485,9 @@
           createdAt: serverTimestamp(),
           isAdmin: false,
           completedTasks: [],
-          whatsapp: ""
+          whatsapp: "",
+          withdrawProofApproved: false,
+          withdrawProofStatus: "none"
         });
         
         // Si le parrain est valide, mettre à jour son compte
@@ -2360,7 +2512,9 @@
           id: userId,
           name: userName,
           isAdmin: isAdmin,
-          referrer: userReferrer
+          referrer: userReferrer,
+          withdrawProofApproved: false,
+          withdrawProofStatus: "none"
         }));
         
         // Mettre à jour le message de bienvenue
@@ -2537,12 +2691,32 @@
           return;
         }
         
+        if (!userData.withdrawProofApproved) {
+          showNotification("Vous devez soumettre une preuve de retrait avant de pouvoir effectuer un retrait.", "warning");
+          showSection('proofSection');
+          bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
+          return;
+        }
+        
         if (montant >= 500) {
           const frais = montant * 0.1;
           await addDoc(collection(db, "retrait_requests"), {
             userId, userName, nom, phone, montant, frais,
             status: "en attente", createdAt: serverTimestamp()
           });
+          
+          // Réinitialiser l'approbation de preuve après le retrait
+          await updateDoc(userRef, {
+            withdrawProofApproved: false,
+            withdrawProofStatus: "none"
+          });
+          
+          // Mettre à jour le stockage local
+          const currentUser = JSON.parse(localStorage.getItem('milaVolaUser'));
+          currentUser.withdrawProofApproved = false;
+          currentUser.withdrawProofStatus = "none";
+          localStorage.setItem('milaVolaUser', JSON.stringify(currentUser));
+          
           showNotification("Retrait voaray! Votre demande est en cours de traitement.", "success");
           
           // Reset form and close modal
@@ -3083,6 +3257,55 @@
       await loadRequests('depot_requests','depotList','depot');
       await loadRequests('retrait_requests','retraitList','retrait');
       await loadRequests('submissions','submissionList','proof');
+      await loadWithdrawProofs();
+    }
+    
+    async function loadWithdrawProofs() {
+      try {
+        const list = document.getElementById('withdrawProofList');
+        list.innerHTML = '';
+        
+        const q = query(collection(db, "withdraw_proofs"), where('status','==','en attente'));
+        const snap = await getDocs(q);
+        
+        if (snap.empty) {
+          list.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4">
+                <div class="empty-state py-0">
+                  <i class="fas fa-inbox"></i>
+                  <p>Aucune preuve de retrait en attente</p>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+        
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString() : 'Date inconnue';
+          const el = document.createElement('tr');
+          
+          el.innerHTML = `
+            <td>${d.userName}</td>
+            <td><a href="${d.publicationLink}" target="_blank">Voir la publication</a></td>
+            <td>${date}</td>
+            <td><span class="history-badge badge-pending">${d.status}</span></td>
+            <td class="admin-actions">
+              <button class='btn btn-success btn-sm me-1' onclick='confirmWithdrawProof("${docSnap.id}", ${JSON.stringify(d)})'>
+                <i class="fas fa-check me-1"></i> Confirmer
+              </button>
+              <button class='btn btn-danger btn-sm' onclick='cancelWithdrawProof("${docSnap.id}")'>
+                <i class="fas fa-times me-1"></i> Annuler
+              </button>
+            </td>
+          `;
+          list.appendChild(el);
+        });
+      } catch (error) {
+        console.error("Error loading withdraw proofs:", error);
+      }
     }
     
     async function loadRequests(col, container, type) {
@@ -3187,6 +3410,154 @@
         } else {
           rows[i].style.display = 'none';
         }
+      }
+    };
+
+    // --- Nouvelle section Preuve de Retrait ---
+    async function loadProofStatus() {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          const statusElement = document.getElementById('proofStatus');
+          
+          if (userData.withdrawProofStatus === "en attente") {
+            statusElement.className = "proof-status pending";
+            statusElement.innerHTML = `
+              <i class="fas fa-clock me-2"></i> 
+              Votre preuve est en attente de vérification par l'administrateur
+            `;
+          } else if (userData.withdrawProofStatus === "confirmé") {
+            statusElement.className = "proof-status approved";
+            statusElement.innerHTML = `
+              <i class="fas fa-check-circle me-2"></i> 
+              Votre preuve a été approuvée! Vous pouvez effectuer un retrait
+            `;
+          } else if (userData.withdrawProofStatus === "rejeté") {
+            statusElement.className = "proof-status rejected";
+            statusElement.innerHTML = `
+              <i class="fas fa-times-circle me-2"></i> 
+              Votre preuve a été rejetée. Veuillez soumettre une nouvelle preuve
+            `;
+          } else {
+            statusElement.className = "proof-status none";
+            statusElement.innerHTML = `
+              <i class="fas fa-info-circle me-2"></i> 
+              Vous n'avez pas encore soumis de preuve de retrait
+            `;
+          }
+        }
+      } catch (error) {
+        console.error("Error loading proof status:", error);
+      }
+    }
+    
+    // Soumission du formulaire de preuve de retrait
+    document.getElementById('proofForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('proofName').value;
+      const publicationLink = document.getElementById('proofLink').value;
+      const description = document.getElementById('proofDescription').value;
+      
+      if (!name || !publicationLink || !description) {
+        showNotification('Veuillez remplir tous les champs', 'warning');
+        return;
+      }
+      
+      try {
+        // Afficher l'indicateur de chargement
+        const submitBtn = document.querySelector('.proof-submit-btn');
+        const loadingIcon = submitBtn.querySelector('.loading-icon');
+        submitBtn.disabled = true;
+        loadingIcon.style.display = 'inline-block';
+        
+        // Ajouter la preuve à la collection
+        await addDoc(collection(db, "withdraw_proofs"), {
+          userId,
+          userName: name,
+          publicationLink,
+          description,
+          status: "en attente",
+          createdAt: serverTimestamp()
+        });
+        
+        // Mettre à jour le statut de l'utilisateur
+        const userRef = doc(db, "users", userId);
+        await updateDoc(userRef, {
+          withdrawProofStatus: "en attente"
+        });
+        
+        // Mettre à jour le stockage local
+        const currentUser = JSON.parse(localStorage.getItem('milaVolaUser'));
+        currentUser.withdrawProofStatus = "en attente";
+        localStorage.setItem('milaVolaUser', JSON.stringify(currentUser));
+        
+        // Mettre à jour l'affichage
+        loadProofStatus();
+        
+        // Afficher le succès et réinitialiser le formulaire
+        showNotification('Preuve de retrait soumise avec succès!', 'success');
+        e.target.reset();
+        
+        // Changer l'apparence du bouton pour indiquer l'envoi
+        submitBtn.classList.add('sent');
+        
+      } catch (error) {
+        showNotification("Erreur lors de la soumission: " + error.message, 'danger');
+      } finally {
+        // Réactiver le bouton et cacher l'indicateur de chargement
+        const submitBtn = document.querySelector('.proof-submit-btn');
+        const loadingIcon = submitBtn.querySelector('.loading-icon');
+        submitBtn.disabled = false;
+        loadingIcon.style.display = 'none';
+      }
+    });
+    
+    // Confirmation d'une preuve de retrait par l'admin
+    window.confirmWithdrawProof = async (proofId, proofData) => {
+      try {
+        // Mettre à jour la preuve
+        const proofRef = doc(db, "withdraw_proofs", proofId);
+        await updateDoc(proofRef, {
+          status: "confirmé"
+        });
+        
+        // Mettre à jour le statut de l'utilisateur
+        const userRef = doc(db, "users", proofData.userId);
+        await updateDoc(userRef, {
+          withdrawProofApproved: true,
+          withdrawProofStatus: "confirmé"
+        });
+        
+        // Mettre à jour le stockage local de l'utilisateur concerné
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        
+        showNotification('Preuve de retrait confirmée avec succès!', 'success');
+        loadAdminPanel();
+        
+      } catch (error) {
+        showNotification("Erreur lors de la confirmation: " + error.message, 'danger');
+      }
+    };
+    
+    // Annulation d'une preuve de retrait par l'admin
+    window.cancelWithdrawProof = async (proofId) => {
+      try {
+        // Mettre à jour la preuve
+        const proofRef = doc(db, "withdraw_proofs", proofId);
+        await updateDoc(proofRef, {
+          status: "rejeté"
+        });
+        
+        showNotification('Preuve de retrait annulée', 'info');
+        loadAdminPanel();
+        
+      } catch (error) {
+        showNotification("Erreur lors de l'annulation: " + error.message, 'danger');
       }
     };
 
@@ -3514,7 +3885,7 @@
       const payeerAccount = document.getElementById('payeerAccount');
       payeerAccount.select();
       document.execCommand('copy');
-      showNotification('Compte PAYEER copié dans le presse-papiers!', 'success');
+      showNotification('Compte Mvola copié dans le presse-papiers!', 'success');
     }
 
     function shareReferral() {
